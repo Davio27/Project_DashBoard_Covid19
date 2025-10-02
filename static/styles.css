@@ -1,0 +1,497 @@
+ .card-shadow {
+     box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+ }
+
+ .gradient-bg {
+     background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+ }
+ .theme-toggle {
+     background-color: #0f0f0f00 !important;
+ }
+
+ .theme-icon {
+     font-size: 2rem;
+     transition: transform 0.4s ease;
+ }
+
+ .grid-container {
+     margin-left: auto;
+     margin-right: auto;
+ }
+
+ .chart-container {
+     height: 320px !important;
+ }
+
+ .world-map {
+     background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 500"><rect width="1000" height="500" fill="%23f0f9ff"/><path d="M150 200 L200 180 L250 200 L300 190 L350 210 L400 200 L450 220 L500 200 L550 190 L600 210 L650 200 L700 180 L750 200 L800 190 L850 210 Z" fill="%233b82f6" opacity="0.3"/><circle cx="200" cy="200" r="8" fill="%23ef4444"/><circle cx="400" cy="180" r="12" fill="%23dc2626"/><circle cx="600" cy="220" r="6" fill="%23f97316"/><circle cx="750" cy="190" r="10" fill="%23eab308"/></svg>') center/contain no-repeat;
+     min-height: 300px;
+ }
+
+ /* Forçar fundo escuro no body inteiro no modo dark */
+ .dark-theme {
+     background-color: #0a0a0a !important;
+     /* Preto escuro como fundo principal */
+ }
+
+ .tooltip {
+     background-color: white;
+     border: 1px solid #ccc;
+     padding: 5px;
+     border-radius: 4px;
+     pointer-events: none;
+     z-index: 1000;
+ }
+
+ .dark-theme .tooltip {
+     background-color: #333;
+     color: white;
+     border-color: #555;
+ }
+
+ /* Ajustar classes de fundo que podem sobrepor */
+ .dark-theme .bg-gray-50 {
+     background-color: #0a0a0a !important;
+ }
+
+ .dark-theme .gradient-bg {
+     background: linear-gradient(135deg, #3b4a8a 0%, #4a3072 100%) !important;
+     /* Gradiente mais escuro para o header */
+ }
+
+ .dark-theme .bg-gray-800 {
+     background-color: #111111 !important;
+     /* Footer mais escuro */
+ }
+
+ /* Garantir que o container principal siga o body */
+ .dark-theme .container {
+     background-color: transparent !important;
+     /* Deixa transparente para herdar do body */
+ }
+
+ /* Demais regras existentes (ex.: .dark .bg-white, etc.) */
+ .dark-theme .bg-white {
+     background-color: #1a1a1a !important;
+     color: #e5e5e5;
+     border: 1px solid #2a2a2a;
+ }
+
+ .dark-theme .bg-gray-50 {
+     background-color: #0a0a0a !important;
+ }
+
+ .dark-theme .bg-gray {
+     background-color: #0a0a0a !important;
+ }
+
+ .dark-theme .text-gray-800 {
+     color: #e5e5e5 !important;
+ }
+
+ .dark-theme .text-gray-600 {
+     color: #f8f4f4 !important;
+ }
+
+ .dark-theme .text-gray-500 {
+     color: #f8f5f5 !important;
+ }
+
+ .dark-theme .border-gray-300 {
+     border-color: #eee7e7 !important;
+ }
+
+ .dark-theme .divide-gray-200>*+* {
+     border-color: #2a2a2a !important;
+ }
+
+ .dark-theme .bg-gray-800 {
+     background-color: #0f0f0f !important;
+ }
+
+ .dark-theme .theme-toggle {
+     background-color: #0f0f0f00 !important;
+ }
+
+ .dark-theme input,
+ .dark-theme select {
+     background-color: #1f1f1f !important;
+     color: #e5e5e5 !important;
+     border-color: #2a2a2a !important;
+ }
+
+ /* Ajustes para o modo dark na tabela de dados detalhados */
+ .dark-theme .detailed-country-data h2 {
+     color: #e5e5e5 !important;
+
+ }
+
+ .dark-theme #countryTable th {
+     color: #d1d5db !important;
+     /* Cabeçalho em cinza claro */
+ }
+
+ .dark-theme #countryTable td {
+     color: #e5e5e5 !important;
+     /* Dados (países, valores) em branco claro */
+ }
+
+ .dark-theme #countryTable {
+     background-color: #1a1a1a !important;
+     /* Fundo da tabela escuro */
+ }
+
+ .dark-theme #countryTable thead {
+     background-color: #2a2a2a !important;
+     /* Cabeçalho escuro */
+ }
+
+ /* Estilo geral da tabela com cantos arredondados */
+ #countryTable {
+     border-radius: 8px !important;
+     overflow: hidden;
+     width: 90% !important;
+    margin: 0 auto !important;
+     
+ }
+
+ /* Ajuste do cabeçalho para alinhar com os cantos arredondados */
+ #countryTable thead tr:first-child th:first-child {
+     border-top-left-radius: 8px !important;
+ }
+
+ #countryTable thead tr:first-child th:last-child {
+     border-top-right-radius: 8px !important;
+ }
+
+ /* Ajuste do corpo para alinhar com os cantos arredondados (última linha) */
+ #countryTable tbody tr:last-child td:first-child {
+     border-bottom-left-radius: 8px !important;
+ }
+
+ #countryTable tbody tr:last-child td:last-child {
+     border-bottom-right-radius: 8px !important;
+ }
+
+ /* Manter o fundo e cores existentes */
+ #countryTable th {
+     background-color: #3b82f6 !important;
+     /* Azul vibrante no light */
+     color: #ffffff !important;
+     font-weight: bold;
+     padding: 12px 6px;
+ }
+
+ .dark-theme #countryTable th {
+     background-color: #60a5fa !important;
+     /* Azul claro no dark */
+     color: #1a1a1a !important;
+     font-weight: bold;
+     padding: 12px 6px;
+ }
+
+ .dark-theme #countryTable {
+     background-color: #1a1a1a !important;
+ }
+
+ .dark-theme #countryTable thead {
+     background-color: transparent !important;
+ }
+
+ .dark-theme #countryTable tbody tr {
+     border-bottom: 1px solid #2a2a2a !important;
+     /* Linhas de separação escuras */
+ }
+
+ /* Estilo do cabeçalho da tabela no modo light */
+ #countryTable th {
+     background-color: #3b82f6 !important;
+     /* Azul vibrante */
+     color: #ffffff !important;
+     /* Texto branco para contraste */
+     font-weight: bold;
+     padding: 12px 6px;
+     /* Ajuste de padding para melhor aparência */
+ }
+
+ /* Estilo do cabeçalho da tabela no modo dark */
+ .dark-theme #countryTable th {
+     background-color: #60a5fa !important;
+     /* Azul claro para legibilidade no dark */
+     color: #1a1a1a !important;
+     /* Texto escuro para contraste */
+     font-weight: bold;
+     padding: 12px 6px;
+ }
+
+ /* Garante que o fundo da tabela no modo dark não interfira */
+ .dark-theme #countryTable thead {
+     background-color: transparent !important;
+     /* Deixa o fundo do th dominar */
+ }
+
+ /* Chat Widget Dark Theme */
+ .dark #chatWidget {
+     background-color: #1a1a1a !important;
+     border-color: #2a2a2a !important;
+ }
+
+ .dark #chatWidget .bg-gray-50 {
+     background-color: #0f0f0f !important;
+ }
+
+ .dark #chatWidget .bg-white {
+     background-color: #1f1f1f !important;
+     color: #e5e5e5 !important;
+ }
+
+ .dark #chatWidget .border-gray-200 {
+     border-color: #2a2a2a !important;
+ }
+
+ .dark #chatWidget .bg-gray-100 {
+     background-color: #2a2a2a !important;
+     color: #e5e5e5 !important;
+ }
+
+ .dark #chatWidget .bg-gray-100:hover {
+     background-color: #3a3a3a !important;
+ }
+
+ .dark #chatInput {
+     background-color: #1f1f1f !important;
+     color: #e5e5e5 !important;
+     border-color: #2a2a2a !important;
+ }
+
+ /* Login Screen */
+ .login-container {
+     background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+     min-height: 100vh;
+     display: flex;
+     align-items: center;
+     justify-content: center;
+ }
+
+ .login-card {
+     background: rgba(255, 255, 255, 0.95);
+     backdrop-filter: blur(10px);
+     border-radius: 20px;
+     padding: 2rem;
+     box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+     width: 100%;
+     max-width: 400px;
+     animation: slideUp 0.6s ease-out;
+ }
+
+ .dark .login-card {
+     background: rgba(26, 26, 26, 0.98);
+     color: #e5e5e5;
+     border: 1px solid #2a2a2a;
+ }
+
+ css
+
+ /* Estilos para o modo dark na tela de login */
+ .dark-theme .login-container {
+     background-color: #0a0a0a !important;
+ }
+
+ .dark-theme .login-card {
+     background-color: #1a1a1a !important;
+     border: 1px solid #2a2a2a !important;
+     color: #e5e5e5 !important;
+ }
+
+ .dark-theme .login-card input {
+     background-color: #1f1f1f !important;
+     color: #e5e5e5 !important;
+     border-color: #2a2a2a !important;
+ }
+
+ .dark-theme .login-card input:focus {
+     border-color: #3b82f6 !important;
+     box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.2) !important;
+ }
+
+ .dark-theme .login-card label {
+     color: #080808 !important;
+ }
+
+ .dark-theme .login-card .text-gray-800 {
+     color: #e5e5e5 !important;
+ }
+
+ .dark-theme .login-card .text-gray-600 {
+     color: #f8f4f4 !important;
+ }
+
+ .dark-theme .login-card .text-gray-500 {
+     color: #f8f5f5 !important;
+ }
+
+ .dark-theme .login-card .border-gray-200 {
+     border-color: #2a2a2a !important;
+ }
+
+ .dark-theme .login-card .bg-gradient-to-r {
+     background: linear-gradient(135deg, #3b4a8a 0%, #4a3072 100%) !important;
+ }
+
+ .dark-theme .login-card .hover\:from-blue-600 {
+     background: linear-gradient(135deg, #3b4a8a 0%, #4a3072 100%) !important;
+ }
+
+ .dark-theme .login-card .hover\:to-purple-700:hover {
+     background: linear-gradient(135deg, #2f3a6e 0%, #3a2a5a 100%) !important;
+ }
+
+ .dark-theme .login-card .text-blue-600 {
+     color: #60a5fa !important;
+ }
+
+ .dark-theme .login-card .hover\:text-blue-500:hover {
+     color: #3b82f6 !important;
+ }
+
+ @keyframes slideUp {
+     from {
+         opacity: 0;
+         transform: translateY(30px);
+     }
+
+     to {
+         opacity: 1;
+         transform: translateY(0);
+     }
+ }
+
+ .input-group {
+     position: relative;
+     margin-bottom: 1.5rem;
+ }
+
+ .input-group input {
+     width: 100%;
+     padding: 12px 16px;
+     border: 2px solid #e5e7eb;
+     border-radius: 12px;
+     font-size: 16px;
+     transition: all 0.3s ease;
+     background: #ffffff;
+ }
+
+ .dark .input-group input {
+     background: #1f1f1f;
+     border-color: #2a2a2a;
+     color: #e5e5e5;
+ }
+
+ .input-group input:focus {
+     outline: none;
+     border-color: #3b82f6;
+     box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+ }
+
+ .input-group label {
+     position: absolute;
+     left: 16px;
+     top: 12px;
+     color: #6b7280;
+     font-size: 16px;
+     transition: all 0.3s ease;
+     pointer-events: none;
+ }
+
+ .input-group input:focus+label,
+ .input-group input:not(:placeholder-shown)+label {
+     top: -8px;
+     left: 12px;
+     font-size: 12px;
+     color: #3b82f6;
+     background: #ffffff;
+     padding: 0 4px;
+ }
+
+ .dark .input-group input:focus+label,
+ .dark .input-group input:not(:placeholder-shown)+label {
+     background: #1f1f1f;
+     color: #3b82f6;
+ }
+
+ .theme-toggle {
+     position: fixed;
+     top: 20px;
+     right: 20px;
+     z-index: 1000;
+     background: rgba(255, 255, 255, 0.9);
+     border: none;
+     border-radius: 50%;
+     width: 50px;
+     height: 50px;
+     display: flex;
+     align-items: center;
+     justify-content: center;
+     cursor: pointer;
+     transition: all 0.3s ease;
+     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+ }
+
+ .dark .theme-toggle {
+     background: rgba(26, 26, 26, 0.95);
+     color: #e5e5e5;
+     border: 1px solid #2a2a2a;
+ }
+
+ .theme-toggle:hover {
+     transform: scale(1.1);
+ }
+
+ .world-map {
+     min-height: 400px;
+     /* Ajuste conforme a altura do mapa */
+     width: 100%;
+     position: relative;
+ }
+
+ /* Estilo da legenda */
+ .legend-item {
+     display: flex;
+     align-items: center;
+     gap: 5px;
+ }
+
+ .legend-item span {
+     display: inline-block;
+     width: 15px;
+     height: 15px;
+     border-radius: 50%;
+ }
+
+ /* Centralização do Gráfico de Distribuição por Continente */
+ .chart-container {
+     display: flex;
+     justify-content: center;
+     align-items: center;
+     margin: 0 auto;
+     width: 100%;
+     max-width: 400px;
+     /* Ajuste o max-width conforme o tamanho desejado do gráfico */
+ }
+
+ .chart-container canvas {
+     display: block;
+     margin: 0 auto;
+     max-width: 100%;
+     height: auto;
+ }
+
+ #globeContainer {
+     position: relative;
+     overflow: hidden;
+ }
+
+ /* Suporte ao tema escuro para o container do gráfico */
+ .dark .chart-container {
+     /* Se precisar de ajustes no dark mode, adicione aqui */
+ }
