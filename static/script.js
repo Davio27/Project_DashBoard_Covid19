@@ -1434,28 +1434,37 @@ function updatePagination(totalPages, totalItems) {
 // Chama a função ao carregar o DOM
 document.addEventListener('DOMContentLoaded', function () {
     loadSavedTheme();
+
     if (document.getElementById('countryTable')) {
         const thElements = document.querySelectorAll('#countryTable th');
         thElements.forEach(th => {
             th.addEventListener('click', () => sortTable(th.getAttribute('data-sort')));
         });
+
         initCharts();
         loadData().then(() => {
-            if (globalEstadosData.length > 0) distribuicaoporestado(globalEstadosData, 'cases');
+            if (globalEstadosData.length > 0) {
+                distribuicaoporestado(globalEstadosData, 'cases');
+                renderBrazilMap('cases'); // inicia com Casos Confirmados
+            }
+
             if (globalCountriesData.length > 0) {
                 initCountriesChart();
-                populateCountryTable(); // Chama apenas após carregar globalCountriesData
+                populateCountryTable();
             }
-            if (continentesData.length > 0) distribuicaoporcontinente(continentesData);
-            if (globalHistoricoData.length > 0) updateTimelineChart(globalHistoricoData);
-            if (globalEstadosData.length > 0) renderBrazilMap(); // Chama o mapa
+
+            if (globalHistoricoData.length > 0) {
+                initTimelineChart(globalHistoricoData); // garante render inicial
+            }
+
+            // não use continentesData aqui, já está tratado em loadData()
         }).catch(error => console.error('Erro em loadData:', error));
     }
 
     const stateFilter = document.getElementById('stateFilter');
     if (stateFilter) {
         stateFilter.addEventListener('change', () => {
-            updateTimelineChart(globalHistoricoData); // Atualiza gráfico conforme filtro
+            updateTimelineChart(globalHistoricoData);
         });
     }
 
@@ -1466,6 +1475,7 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     }
 });
+
 
 function toggleDataset(type) {
     let datasetIndex;
