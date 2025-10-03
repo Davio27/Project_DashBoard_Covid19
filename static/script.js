@@ -172,6 +172,7 @@ async function loadData() {
         if (estadosData && estadosData.length > 0) {
             globalEstadosData = estadosData;
             distribuicaoporestado(globalEstadosData, 'cases'); // Inicializa com casos
+            renderBrazilMap('cases');
         } else {
             console.error('Erro: Dados de estados não carregados.');
         }
@@ -205,10 +206,9 @@ async function loadData() {
                 renderBrazilMap(); // <-- adiciona essa linha
             } else {
             }
-
-
             // Inicializa gráfico com todos os estados
             updateTimelineChart(globalHistoricoData);
+            initTimelineChart(globalHistoricoData);
         }
     } catch (error) {
     }
@@ -256,7 +256,7 @@ function setMetric(metric) {
 
 function renderGlobe() {
     if (!isLoaded || !globeData || globeData.length === 0 || !globeLand) {
-        return; // Sai sem desenhar se não pronto
+        return;
     }
     globeContext.clearRect(0, 0, 800, 600);
 
@@ -849,10 +849,10 @@ function initCharts() {
 }
 
 function updateCounters(globalData) {
-    document.getElementById('totalCases').textContent = (globalData.confirmed / 1000000).toFixed(1) + 'M';
-    document.getElementById('totalDeaths').textContent = (globalData.deaths / 1000000).toFixed(1) + 'M';
-    document.getElementById('totalRecovered').textContent = (globalData.recovered / 1000000).toFixed(1) + 'M';
-    document.getElementById('activeCases').textContent = ((globalData.confirmed - globalData.deaths - globalData.recovered) / 1000000).toFixed(1) + 'M';
+    document.getElementById('totalCases').textContent = _formatNumberBR(globalData.confirmed);
+    document.getElementById('totalDeaths').textContent = _formatNumberBR(globalData.deaths);
+    document.getElementById('totalRecovered').textContent = _formatNumberBR(globalData.recovered);
+    document.getElementById('activeCases').textContent = _formatNumberBR(globalData.suspects || (globalData.confirmed - globalData.deaths - globalData.recovered));
 }
 
 function updateCountriesChart() {
@@ -1716,20 +1716,20 @@ function toggleChat() {
 }
 
 // Função para enviar mensagem
-function sendMessage() {
+
+async function sendMessage() {
     const input = document.getElementById('chatInput');
     const message = input.value.trim();
-
     if (message) {
         addUserMessage(message);
         input.value = '';
 
-        // Simular digitação do bot
-        setTimeout(() => {
-            addBotMessage(getBotResponse(message));
-        }, 1000);
+        // Aguarda a resposta do agente
+        const botResponse = await getBotResponse(message);
+        addBotMessage(botResponse);
     }
 }
+
 
 // Função para lidar com Enter no chat
 function handleChatKeyPress(event) {
@@ -1783,34 +1783,17 @@ function addBotMessage(message) {
 }
 
 // Obter resposta do bot
+
 async function getBotResponse(message) {
-    const lowerMessage = message.toLowerCase();
-
-    // Procurar por palavras-chave
-    for (const key in chatResponses) {
-        if (lowerMessage.includes(key)) {
-            return chatResponses[key];
-        }
+    try {
+        const res = await fetch('/api/chat', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ message })
+        });
+        const data = await res.json();
+        return data.response || 'Desculpe, não consegui entender.';
+    } catch (error) {
+        return 'Erro ao conectar com o agente.';
     }
-
-    // Verificar países específicos
-    const countries = ['brasil', 'eua', 'estados unidos', 'china', 'india', 'frança', 'alemanha', 'japão', 'coreia', 'itália', 'reino unido'];
-    const paisesRes = await fetch('/api/paises');
-    const paisesData = await paisesRes.json();
-    for (const country of countries) {
-        if (lowerMessage.includes(country)) {
-            const countryData = paisesData.find(c =>
-                c.country.toLowerCase().includes(country) ||
-                (country === 'eua' && c.country.includes('United States')) ||
-                (country === 'estados unidos' && c.country.includes('United States'))
-            );
-            if (countryData) {
-                const mortalityRate = ((countryData.deaths / countryData.confirmed) * 100).toFixed(2);
-                return `${countryData.flag || '🌍'} **${countryData.country}**: ${countryData.confirmed.toLocaleString()} casos, ${countryData.deaths.toLocaleString()} mortes, ${countryData.recovered ? countryData.recovered.toLocaleString() : 'N/A'} recuperados. Taxa de mortalidade: ${mortalityRate}%.`;
-            }
-        }
-    }
-
-    // Resposta padrão
-    return chatResponses.default;
 }
