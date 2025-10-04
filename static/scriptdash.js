@@ -283,7 +283,7 @@ function renderGlobe() {
 
         globeContext.beginPath();
         globePath(feature);
-        globeContext.fillStyle = value > 0 ? colorScale(value) : "#cddaadff";
+        globeContext.fillStyle = value > 0 ? colorScale(value) : "#c7d1b0ff";
         globeContext.fill();
         globeContext.strokeStyle = "#20201fff";
         globeContext.stroke();
@@ -851,8 +851,8 @@ function initCharts() {
 function updateCounters(globalData) {
     document.getElementById('totalCases').textContent = _formatNumberBR(globalData.confirmed);
     document.getElementById('totalDeaths').textContent = _formatNumberBR(globalData.deaths);
-    document.getElementById('totalRecovered').textContent = _formatNumberBR(globalData.confirmed - globalData.deaths);
-    // document.getElementById('activeCases').textContent = _formatNumberBR(globalData.suspects);
+    document.getElementById('totalRecovered').textContent = _formatNumberBR(globalData.recovered);
+    document.getElementById('activeCases').textContent = _formatNumberBR(globalData.suspects || (globalData.confirmed - globalData.deaths - globalData.recovered));
 }
 
 function updateCountriesChart() {
@@ -919,82 +919,82 @@ function updateCountriesChart() {
 
 // ----------------------------------------------------------------------------------------------------------------------------------
 
-// function initCountriesChart() {
-//     const countriesCtx = document.getElementById('countriesChart').getContext('2d');
-//     if (!countriesCtx) {
-//         console.error('Contexto do canvas #countriesChart não encontrado.');
-//         return;
-//     }
-//     countriesChart = new Chart(countriesCtx, {
-//         type: 'bar',
-//         data: {
-//             labels: [],
-//             datasets: [{
-//                 label: 'Casos Confirmados',
-//                 data: [],
-//                 backgroundColor: [
-//                     '#3b82f6', '#ef4444', '#10b981', '#f59e0b', '#8b5cf6',
-//                     '#06b6d4', '#84cc16', '#f97316', '#ec4899', '#6366f1'
-//                 ],
-//                 borderRadius: 8,
-//                 borderSkipped: false
-//             }]
-//         },
-//         options: {
-//             responsive: true,
-//             maintainAspectRatio: false,
-//             indexAxis: 'y',
-//             plugins: {
-//                 legend: { display: false },
-//                 tooltip: {
-//                     backgroundColor: 'rgba(0, 0, 0, 0.8)',
-//                     titleColor: 'white',
-//                     bodyColor: 'white',
-//                     cornerRadius: 8,
-//                     callbacks: {
-//                         label: function (tooltipItem) {
-//                             let total = 0;
-//                             countriesChart.data.datasets[0].data.forEach(val => total += val);
-//                             const percentage = ((tooltipItem.raw / total) * 100).toFixed(1);
-//                             return `${tooltipItem.label}: ${tooltipItem.raw.toLocaleString()} ${countriesChart.data.datasets[0].label.toLowerCase()} (${percentage}%)`;
-//                         }
-//                     },
-//                     backgroundColor: 'rgba(0, 0, 0, 0.9)',
-//                     titleFont: { size: 26, weight: 'bold' },
-//                     bodyFont: { size: 18 },
-//                     padding: 12,
-//                     caretSize: 10,
-//                     cornerRadius: 8,
-//                     boxPadding: 6,
-//                     minWidth: 250,
-//                     displayColors: true,
-//                     boxRadius: 20
-//                 }
-//             },
-//             scales: {
-//                 x: {
-//                     beginAtZero: true,
-//                     grid: { color: 'rgba(0, 0, 0, 0.05)' },
-//                     ticks: {
-//                         callback: function (value) { return (value / 1000000).toFixed(1) + 'M'; },
-//                         color: document.body.classList.contains('dark-theme') ? 'white' : '#333'
-//                     }
-//                 },
-//                 y: {
-//                     grid: { display: false },
-//                     ticks: { color: document.body.classList.contains('dark-theme') ? 'white' : '#333' }
-//                 }
-//             },
-//             animation: { duration: 1500, easing: 'easeOutBounce' }
-//         }
-//     });
-//     // Atualiza com os dados atuais após inicialização
-//     if (globalCountriesData.length > 0) {
-//         const chartMetricSelect = document.getElementById('chartMetric');
-//         const currentMetric = chartMetricSelect ? chartMetricSelect.value : 'cases';
-//         updateCountriesChart();
-//     }
-// }
+function initCountriesChart() {
+    const countriesCtx = document.getElementById('countriesChart').getContext('2d');
+    if (!countriesCtx) {
+        console.error('Contexto do canvas #countriesChart não encontrado.');
+        return;
+    }
+    countriesChart = new Chart(countriesCtx, {
+        type: 'bar',
+        data: {
+            labels: [],
+            datasets: [{
+                label: 'Casos Confirmados',
+                data: [],
+                backgroundColor: [
+                    '#3b82f6', '#ef4444', '#10b981', '#f59e0b', '#8b5cf6',
+                    '#06b6d4', '#84cc16', '#f97316', '#ec4899', '#6366f1'
+                ],
+                borderRadius: 8,
+                borderSkipped: false
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            indexAxis: 'y',
+            plugins: {
+                legend: { display: false },
+                tooltip: {
+                    backgroundColor: 'rgba(0, 0, 0, 0.8)',
+                    titleColor: 'white',
+                    bodyColor: 'white',
+                    cornerRadius: 8,
+                    callbacks: {
+                        label: function (tooltipItem) {
+                            let total = 0;
+                            countriesChart.data.datasets[0].data.forEach(val => total += val);
+                            const percentage = ((tooltipItem.raw / total) * 100).toFixed(1);
+                            return `${tooltipItem.label}: ${tooltipItem.raw.toLocaleString()} ${countriesChart.data.datasets[0].label.toLowerCase()} (${percentage}%)`;
+                        }
+                    },
+                    backgroundColor: 'rgba(0, 0, 0, 0.9)',
+                    titleFont: { size: 26, weight: 'bold' },
+                    bodyFont: { size: 18 },
+                    padding: 12,
+                    caretSize: 10,
+                    cornerRadius: 8,
+                    boxPadding: 6,
+                    minWidth: 250,
+                    displayColors: true,
+                    boxRadius: 20
+                }
+            },
+            scales: {
+                x: {
+                    beginAtZero: true,
+                    grid: { color: 'rgba(0, 0, 0, 0.05)' },
+                    ticks: {
+                        callback: function (value) { return (value / 1000000).toFixed(1) + 'M'; },
+                        color: document.body.classList.contains('dark-theme') ? 'white' : '#333'
+                    }
+                },
+                y: {
+                    grid: { display: false },
+                    ticks: { color: document.body.classList.contains('dark-theme') ? 'white' : '#333' }
+                }
+            },
+            animation: { duration: 1500, easing: 'easeOutBounce' }
+        }
+    });
+    // Atualiza com os dados atuais após inicialização
+    if (globalCountriesData.length > 0) {
+        const chartMetricSelect = document.getElementById('chartMetric');
+        const currentMetric = chartMetricSelect ? chartMetricSelect.value : 'cases';
+        updateCountriesChart();
+    }
+}
 
 function initTimelineChart(historicoData) {
     const timelineCtx = document.getElementById('timelineChart').getContext('2d');
@@ -1106,7 +1106,7 @@ function updateTimelineChart(historicoData) {
         }
         acc[date].cases += curr.cases || 0;
         acc[date].deaths += curr.deaths || 0;
-        acc[date].recovered += (curr.cases || 0) - (curr.deaths || 0);
+        acc[date].recovered += curr.recovered ?? ((curr.cases || 0) - (curr.deaths || 0));
         acc[date].suspects += curr.suspects || 0;
         return acc;
     }, {});
@@ -1434,37 +1434,28 @@ function updatePagination(totalPages, totalItems) {
 // Chama a função ao carregar o DOM
 document.addEventListener('DOMContentLoaded', function () {
     loadSavedTheme();
-
     if (document.getElementById('countryTable')) {
         const thElements = document.querySelectorAll('#countryTable th');
         thElements.forEach(th => {
             th.addEventListener('click', () => sortTable(th.getAttribute('data-sort')));
         });
-
         initCharts();
         loadData().then(() => {
-            if (globalEstadosData.length > 0) {
-                distribuicaoporestado(globalEstadosData, 'cases');
-                renderBrazilMap('cases'); // inicia com Casos Confirmados
-            }
-
+            if (globalEstadosData.length > 0) distribuicaoporestado(globalEstadosData, 'cases');
             if (globalCountriesData.length > 0) {
-                updateCountriesChart();
-                populateCountryTable();
+                initCountriesChart();
+                populateCountryTable(); // Chama apenas após carregar globalCountriesData
             }
-
-            if (globalHistoricoData.length > 0) {
-                initTimelineChart(globalHistoricoData); // garante render inicial
-            }
-
-            // não use continentesData aqui, já está tratado em loadData()
+            if (continentesData.length > 0) distribuicaoporcontinente(continentesData);
+            if (globalHistoricoData.length > 0) updateTimelineChart(globalHistoricoData);
+            if (globalEstadosData.length > 0) renderBrazilMap(); // Chama o mapa
         }).catch(error => console.error('Erro em loadData:', error));
     }
 
     const stateFilter = document.getElementById('stateFilter');
     if (stateFilter) {
         stateFilter.addEventListener('change', () => {
-            updateTimelineChart(globalHistoricoData);
+            updateTimelineChart(globalHistoricoData); // Atualiza gráfico conforme filtro
         });
     }
 
@@ -1475,7 +1466,6 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     }
 });
-
 
 function toggleDataset(type) {
     let datasetIndex;
@@ -1560,24 +1550,6 @@ function animateCounters() {
             counter.element.textContent = current.toFixed(1) + counter.suffix;
         }, 20);
     });
-}
-
-function handleLogin(event) {
-    event.preventDefault();
-
-    const email = document.getElementById('email').value;
-    const password = document.getElementById('password').value;
-
-    if (email && password) {
-        const submitBtn = event.target.querySelector('button[type="submit"]');
-        const originalText = submitBtn.textContent;
-        submitBtn.textContent = 'Entrando...';
-        submitBtn.disabled = true;
-
-        setTimeout(() => {
-            window.location.href = '/dashboard';
-        }, 1500);
-    }
 }
 
 function logout() {
@@ -1807,17 +1779,3 @@ async function getBotResponse(message) {
         return 'Erro ao conectar com o agente.';
     }
 }
-// expor no escopo global
-window.alternarTema = alternarTema;
-window.logout = logout;
-window.updateDashboard = updateDashboard;
-window.toggleDataset = toggleDataset;
-window.updateCountriesChart = updateCountriesChart;
-window.updateWeeklyTrendChart = updateWeeklyTrendChart;
-window.renderBrazilMap = renderBrazilMap;
-window.toggleChat = toggleChat;
-window.sendMessage = sendMessage;
-window.askQuestion = askQuestion;
-window.closeMunicipiosModal = closeMunicipiosModal;
-window.handleLogin = handleLogin;
-window.togglePasswordVisibility = togglePasswordVisibility;
