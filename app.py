@@ -2,7 +2,8 @@ from flask import Flask, render_template, redirect, url_for, request, jsonify
 import os
 import sys
 sys.path.append(os.path.join(os.path.dirname(__file__), 'backend'))
-from main import load_covid_data, get_casos_brasil, get_casos_brasil_historico, get_casos_estados, get_casos_paises, get_covid19_data, get_continente_data
+from main import (load_covid_data, get_casos_brasil, get_casos_brasil_historico, get_casos_estados, get_casos_paises, get_covid19_data, get_continente_data)
+
 
 app = Flask(__name__)
 
@@ -35,6 +36,8 @@ def logout():
 def api_brasil():
     brasil_data = get_casos_brasil()
     return jsonify(brasil_data)
+
+
 
 @app.route('/api/brasil/historico')
 def api_brasil_historico():
