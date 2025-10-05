@@ -9,6 +9,17 @@ let globeLand;      // geometria topojson
 let currentMetric = "confirmed"; // métrica inicial
 let isLoaded = false; // Flag para carregamento completo
 
+// Adicionar eventos de change para filtros
+document.addEventListener('DOMContentLoaded', () => {
+    const countryFilter = document.getElementById('countryFilter');
+    const periodFilter = document.getElementById('periodFilter');
+    const stateFilter = document.getElementById('stateFilter');
+
+    if (countryFilter) countryFilter.addEventListener('change', updateAllFilters);
+    if (periodFilter) periodFilter.addEventListener('change', updateAllFilters);
+    if (stateFilter) stateFilter.addEventListener('change', updateAllFilters);
+});
+
 // ----------------- Mapa Mundial Interativo -----------------
 function setMetric(metric) {
     currentMetric = metric;
@@ -128,6 +139,45 @@ function applyFiltersAndUpdateCards() {
     }
 }
 
+function updateAllFilters() {
+    const region = document.getElementById('countryFilter')?.value || 'Brasil';
+    const period = document.getElementById('periodFilter')?.value || 'full';
+    const stateFilter = document.getElementById('stateFilter');
+    const currentState = stateFilter ? stateFilter.value : '';
+
+    if (!globalHistoricoData || globalHistoricoData.length === 0) {
+        console.warn('updateAllFilters: globalHistoricoData vazio.');
+        return;
+    }
+
+    // Primeiro, filtre por região e período
+    let filtered = filterByRegionAndPeriod(globalHistoricoData, region, period);
+
+    // Em seguida, aplique o filtro de estado (se houver)
+    if (currentState && currentState !== '') {
+        filtered = filtered.filter(row => row.uf === currentState);
+    }
+
+    // Atualiza os cards
+    const sums = calcSums(filtered);
+    const elCases = document.getElementById('totalCases');
+    const elDeaths = document.getElementById('totalDeaths');
+    const elRecovered = document.getElementById('totalRecovered');
+    const elSuspects = document.getElementById('activeCases');
+
+    if (elCases) elCases.textContent = _formatNumberBR(sums.cases);
+    if (elDeaths) elDeaths.textContent = _formatNumberBR(sums.deaths);
+    if (elRecovered) elRecovered.textContent = _formatNumberBR(sums.recovered);
+    if (elSuspects) elSuspects.textContent = _formatNumberBR(sums.suspects);
+
+    // Atualiza o timelineChart com os dados filtrados combinados
+    try {
+        updateTimelineChart(filtered);
+    } catch (e) {
+        console.warn('Não foi possível atualizar timelineChart com os dados filtrados.', e);
+    }
+}
+
 // ----------------- Fim das helpers -----------------
 
 // --- Chart lifecycle helpers (evita "Canvas is already in use") ---
@@ -143,6 +193,14 @@ function destroyAllCharts() {
     } finally {
         timelineChart = countriesChart = continentChart = weeklyTrendChart = radarChart = null;
     }
+}
+
+function updateTimelineChart(filteredData) {
+    if (timelineChart) {
+        timelineChart.destroy();  // Destrói o chart existente para evitar erros
+        timelineChart = null;
+    }
+    initTimelineChart(filteredData);  // Recria o chart com os novos dados filtrados
 }
 
 async function loadData() {
@@ -181,7 +239,7 @@ async function loadData() {
         const historicoData = await historicoRes.json();
         if (historicoData && historicoData.length > 0) {
             globalHistoricoData = historicoData;
-            applyFiltersAndUpdateCards();
+            updateAllFilters();
             const statesMap = new Map();
             historicoData.forEach(item => {
                 if (item.uf && item.state && !statesMap.has(item.uf)) {
@@ -208,7 +266,7 @@ async function loadData() {
             }
             // Inicializa gráfico com todos os estados
             updateTimelineChart(globalHistoricoData);
-            initTimelineChart(globalHistoricoData);
+            // initTimelineChart(globalHistoricoData);
         }
     } catch (error) {
     }
@@ -409,14 +467,20 @@ function distribuicaoporestado(data, metric = 'cases') {
             type: 'bar',
             data: {
                 labels: labels,
+                // E aqui
                 datasets: [{
                     label: metric === 'cases' ? 'Casos Confirmados' :
                         metric === 'deaths' ? 'Total de Mortes' : 'Recuperados',
                     data: values,
                     backgroundColor: labels.map((_, i) => colors[i % colors.length]),
                     borderColor: labels.map((_, i) => colors[i % colors.length].replace('0.6', '1')),
-                    borderWidth: 1,
-                    borderRadius: 5
+                    // borderWidth: 1,
+                    borderRadius: 5,
+                    tension: 0.4,
+                    fill: true,
+                    pointRadius: 6,
+                    pointHoverRadius: 8,
+                    borderWidth: 3
                 }]
             },
             options: {
@@ -532,28 +596,6 @@ function initCharts() {
                     data: [],
                     borderColor: '#f59e0b',
                     backgroundColor: 'rgba(245, 158, 11, 0.1)',
-                    tension: 0.4,
-                    fill: true,
-                    pointRadius: 6,
-                    pointHoverRadius: 8,
-                    borderWidth: 3
-                },
-                {
-                    label: 'Recusas',
-                    data: [],
-                    borderColor: '#8b5cf6',
-                    backgroundColor: 'rgba(139, 92, 246, 0.1)',
-                    tension: 0.4,
-                    fill: true,
-                    pointRadius: 6,
-                    pointHoverRadius: 8,
-                    borderWidth: 3
-                },
-                {
-                    label: 'Broadcast',
-                    data: [],
-                    borderColor: '#06b6d4',
-                    backgroundColor: 'rgba(6, 182, 212, 0.1)',
                     tension: 0.4,
                     fill: true,
                     pointRadius: 6,

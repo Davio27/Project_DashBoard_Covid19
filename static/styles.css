@@ -5,6 +5,7 @@
  .gradient-bg {
      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
  }
+
  .theme-toggle {
      background-color: #0f0f0f00 !important;
  }
@@ -52,6 +53,41 @@
  /* Ajustar classes de fundo que podem sobrepor */
  .dark-theme .bg-gray-50 {
      background-color: #0a0a0a !important;
+ }
+
+ .dark-theme .border-l-4 {
+     border-left-width: 5px !important;
+     /* aumenta para 8px só no dark */
+ }
+
+ .dark-theme .border-blue-500 {
+     border-left-color: #3b82f6 !important;
+     /* azul */
+ }
+
+ .dark-theme .border-red-500 {
+     border-left-color: #ef4444 !important;
+     /* vermelho */
+ }
+
+ .dark-theme .border-green-500 {
+     border-left-color: #22c55e !important;
+     /* verde */
+ }
+
+ .dark-theme .border-orange-500 {
+     border-left-color: #f97316 !important;
+     /* laranja */
+ }
+
+ .dark-theme .border-yellow-500 {
+     border-left-color: #eab308 !important;
+     /* amarelo */
+ }
+
+ .dark-theme .border-purple-500 {
+     border-left-color: #a855f7 !important;
+     /* roxo */
  }
 
  .dark-theme .gradient-bg {
@@ -151,8 +187,8 @@
      border-radius: 8px !important;
      overflow: hidden;
      width: 90% !important;
-    margin: 0 auto !important;
-     
+     margin: 0 auto !important;
+
  }
 
  /* Ajuste do cabeçalho para alinhar com os cantos arredondados */
@@ -494,4 +530,15 @@
  /* Suporte ao tema escuro para o container do gráfico */
  .dark .chart-container {
      /* Se precisar de ajustes no dark mode, adicione aqui */
+ }
+
+ .input-group input:focus+label,
+ .input-group input.has-value+label {
+     top: -8px;
+     left: 12px;
+     font-size: 14px;
+     color: #3b82f6;
+     background: #ffffff;
+     padding: 0 4px;
+     border-radius: 3px;
  }

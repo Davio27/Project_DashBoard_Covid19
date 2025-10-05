@@ -5,13 +5,14 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dashboard COVID-19</title>
+    <link rel="icon" type="image/png" href="{{ url_for('static', filename='img/icone.png') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="https://d3js.org/d3.v7.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/topojson@3"></script>
     <script src="https://unpkg.com/versor@0.2/dist/versor.min.js"></script>
-    <link rel="stylesheet" href="/static/styles.css">
 </head>
 
 <body class="bg-gray-50 font-sans">
@@ -23,15 +24,23 @@
     <!-- Dashboard Principal -->
     <div id="dashboardContent">
         <!-- Header -->
-        <header class="gradient-bg text-white py-6 mb-8">
-            <div class="container mx-auto px-4">
-                <div class="flex justify-between items-center">
-                    <div class="flex-1 text-center">
+        <header class="gradient-bg text-white py-6 mb-8 relative">
+            <div class="container mx-auto px-4 relative">
+                <div class="flex items-center justify-center">
+
+                    <!-- Título centralizado -->
+                    <div class="text-center">
                         <h1 class="text-3xl font-bold">Dashboard COVID-19</h1>
-                        <p class="mt-2 opacity-90">Monitoramento Global em Tempo Real</p>
+                        <p class="mt-2 opacity-90">Monitoramento Global dos Casos de COVID-19 🦠</p>
                     </div>
+
+                    <!-- Ícone no canto esquerdo -->
+                    <img class="w-16 h-16 absolute left-0 top-1/2 -translate-y-1/2"
+                        src="{{ url_for('static', filename='img/icone.png') }}" alt="covid-19" />
+
+                    <!-- Botão de logout no canto direito -->
                     <button onclick="logout()"
-                        class="bg-white bg-opacity-20 hover:bg-opacity-30 text-white px-4 py-2 rounded-lg transition-all duration-200 flex items-center space-x-2">
+                        class="bg-white bg-opacity-20 hover:bg-opacity-30 text-white px-4 py-2 rounded-lg transition-all duration-200 flex items-center space-x-2 absolute right-0 top-1/2 -translate-y-1/2">
                         <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
                             <path fill-rule="evenodd"
                                 d="M3 3a1 1 0 00-1 1v12a1 1 0 102 0V4a1 1 0 00-1-1zm10.293 9.293a1 1 0 001.414 1.414l3-3a1 1 0 000-1.414l-3-3a1 1 0 10-1.414 1.414L14.586 9H7a1 1 0 100 2h7.586l-1.293 1.293z"
@@ -39,6 +48,7 @@
                         </svg>
                         <span>Sair</span>
                     </button>
+
                 </div>
             </div>
         </header>
@@ -69,7 +79,7 @@
                             <option value="90">Últimos 3 meses</option>
                             <option value="180">Últimos 6 meses</option>
                             <option value="365">Último ano</option>
-                            <option value="730">2 Últimos anos</option>
+                            <option value="730">2 últimos anos</option>
                         </select>
                     </div>
                     <div class="flex items-end">
@@ -88,12 +98,12 @@
                     <div class="flex items-center justify-between">
                         <div>
                             <p class="text-sm font-medium text-gray-600">Casos Confirmados</p>
-                            <p id="totalCases" class="text-2xl font-bold text-blue-600">Carregando...</p>
+                            <p id="totalCases" class="text-1xl font-bold text-blue-600">Carregando...</p>
                         </div>
-                        <div class="bg-blue-100 p-3 rounded-full">
-                            <svg class="w-6 h-6 text-blue-600" fill="currentColor" viewBox="0 0 20 20">
-                                <path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
-                            </svg>
+                        <div class="p-3 rounded-full flex items-center justify-center">
+                            <img class="w-10 h-10"
+                                src="https://img.icons8.com/color/48/instagram-verification-badge.png"
+                                alt="verification-badge" />
                         </div>
                     </div>
                 </div>
@@ -103,13 +113,10 @@
                     <div class="flex items-center justify-between">
                         <div>
                             <p class="text-sm font-medium text-gray-600">Mortes Confirmadas</p>
-                            <p id="totalDeaths" class="text-2xl font-bold text-red-600">Carregando...</p>
+                            <p id="totalDeaths" class="text-1xl font-bold text-red-600">Carregando...</p>
                         </div>
-                        <div class="bg-red-100 p-3 rounded-full">
-                            <svg class="w-6 h-6 text-red-600" fill="currentColor" viewBox="0 0 20 20">
-                                <path
-                                    d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" />
-                            </svg>
+                        <div class="p-3 rounded-full flex items-center justify-center">
+                            <img class="w-10 h-10" src="https://img.icons8.com/color/48/death.png" alt="death" />
                         </div>
                     </div>
                 </div>
@@ -119,13 +126,11 @@
                     <div class="flex items-center justify-between">
                         <div>
                             <p class="text-sm font-medium text-gray-600">Recuperados</p>
-                            <p id="totalRecovered" class="text-2xl font-bold text-green-600">Carregando...</p>
+                            <p id="totalRecovered" class="text-1xl font-bold text-green-600">Carregando...</p>
                         </div>
-                        <div class="bg-green-100 p-3 rounded-full">
-                            <svg class="w-6 h-6 text-green-600" fill="currentColor" viewBox="0 0 20 20">
-                                <path
-                                    d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" />
-                            </svg>
+                        <div class="p-3 rounded-full flex items-center justify-center">
+                            <img class="w-10 h-10" src="https://img.icons8.com/color/48/approval--v1.png"
+                                alt="approval--v1" />
                         </div>
                     </div>
                 </div>
@@ -135,12 +140,11 @@
                     <div class="flex items-center justify-between">
                         <div>
                             <p class="text-sm font-medium text-gray-600">Suspeitas</p>
-                            <p id="activeCases" class="text-2xl font-bold text-orange-600">Carregando...</p>
+                            <p id="activeCases" class="text-1xl font-bold text-orange-600">Carregando...</p>
                         </div>
-                        <div class="bg-orange-100 p-3 rounded-full">
-                            <svg class="w-6 h-6 text-orange-600" fill="currentColor" viewBox="0 0 20 20">
-                                <path d="M10 2L3 7v11a2 2 0 002 2h10a2 2 0 002-2V7l-7-5z" />
-                            </svg>
+                        <div class="p-3 rounded-full flex items-center justify-center">
+                            <img class="w-10 h-10" src="https://img.icons8.com/color/48/switch-on--v1.png"
+                                alt="switch-on--v1" />
                         </div>
                     </div>
                 </div>
@@ -148,35 +152,41 @@
 
             <!-- Gráfico de Evolução Temporal -->
             <div class="bg-white rounded-lg card-shadow p-6 mb-6">
-                <div class="flex justify-between items-center mb-4">
-                    <h3 class="text-xl font-bold">Evolução Temporal de Casos no Brasil</h3>
-                    <div class="flex space-x-2">
-                        <button onclick="toggleDataset('cases')" id="toggleCases"
-                            class="px-3 py-1 text-xs bg-blue-100 text-blue-700 rounded-full hover:bg-blue-200 transition-colors flex">Casos</button>
-                        <button onclick="toggleDataset('recovered')" id="toggleRecovered"
+                <div class="flex flex-col sm:flex-row sm:justify-between sm:items-center mb-4">
+                    <h3 class="text-xl font-bold mb-2 sm:mb-0">Evolução Temporal de Casos no Brasil</h3>
+
+                    <!-- Botões e filtro -->
+                    <div class="flex flex-col sm:flex-row sm:items-center sm:space-x-2">
+                        <div class="flex flex-wrap gap-2 mb-2 sm:mb-0">
+                            <button onclick="toggleDataset('cases')" id="toggleCases"
+                                class="px-3 py-1 text-xs bg-blue-100 text-blue-700 rounded-full hover:bg-blue-200 transition-colors flex">Casos</button>
+                            <button onclick="toggleDataset('recovered')" id="toggleRecovered"
                                 class="px-3 py-1 text-xs bg-green-100 text-green-700 rounded-full hover:bg-green-200 transition-colors flex">Recuperados</button>
-                        <button onclick="toggleDataset('deaths')" id="toggleDeaths"
-                            class="px-3 py-1 text-xs bg-red-100 text-red-700 rounded-full hover:bg-red-200 transition-colors flex">Mortes</button>
-                        <button onclick="toggleDataset('suspects')" id="toggleSuspects"
-                            class="px-3 py-1 text-xs bg-yellow-100 text-yellow-700 rounded-full hover:bg-yellow-200 transition-colors flex">Suspeitos</button>
+                            <button onclick="toggleDataset('deaths')" id="toggleDeaths"
+                                class="px-3 py-1 text-xs bg-red-100 text-red-700 rounded-full hover:bg-red-200 transition-colors flex">Mortes</button>
+                            <button onclick="toggleDataset('suspects')" id="toggleSuspects"
+                                class="px-3 py-1 text-xs bg-yellow-100 text-yellow-700 rounded-full hover:bg-yellow-200 transition-colors flex">Suspeitos</button>
+                        </div>
                         <select id="stateFilter"
-                            class="px-3 py-1 text-xs border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 flex">
+                            class="w-40 sm:w-auto px-3 py-1 text-xs border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500">
                             <option value="">Todos os Estados</option>
                             <!-- Opções serão adicionadas dinamicamente via JS -->
                         </select>
                     </div>
                 </div>
+
                 <div class="relative h-80">
                     <canvas id="timelineChart"></canvas>
                 </div>
             </div>
 
+
             <!-- Gráfico de Barras - Top 10 Países -->
             <div class="bg-white rounded-lg card-shadow p-6 mb-6">
-                <div class="flex justify-between items-center mb-4">
+                <div class="flex flex-col sm:flex-row sm:justify-between sm:items-center mb-4">
                     <h3 class="text-lg font-semibold text-gray-800">Top 10 Países</h3>
                     <select id="chartMetric" onchange="updateCountriesChart()"
-                        class="px-3 py-1 text-xs border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500">
+                        class="w-40 sm:w-auto px-3 py-1 text-xs border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500">
                         <option value="cases">Casos Confirmados</option>
                         <option value="deaths">Total de Mortes</option>
                         <option value="recovered">Recuperados</option>
@@ -190,10 +200,10 @@
 
             <!-- Gráfico de Barras - Distribuição por Estado -->
             <div class="bg-white rounded-lg card-shadow p-6 mb-6">
-                <div class="flex justify-between items-center mb-4">
+                <div class="flex flex-col sm:flex-row sm:justify-between sm:items-center mb-4">
                     <h3 class="text-lg font-semibold text-gray-800">Distribuição por Estados do Brasil</h3>
                     <select id="weeklyMetric" onchange="updateWeeklyTrendChart(globalEstadosData, this.value)"
-                        class="px-3 py-1 text-xs border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500">
+                        class="w-40 sm:w-auto px-3 py-1 text-xs border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500">
                         <option value="cases">Casos Confirmados</option>
                         <option value="deaths">Total de Mortes</option>
                         <option value="recovered">Recuperados</option>
@@ -211,7 +221,7 @@
         <div class="container mx-auto px-4 max-w-7xl">
             <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-8 justify-center">
                 <!-- Gráfico de Pizza - Distribuição por Continente -->
-                <div class="bg-white rounded-lg card-shadow p-6 w-full max-w-sm lg:max-w-none justify-center h-280">
+                <div class="bg-white rounded-lg card-shadow p-6 h-280">
                     <h3 class="text-lg font-semibold text-gray-800 mb-4">Distribuição por Continente</h3>
                     <div class="relative h-80 ml-10">
                         <canvas id="continentChart"></canvas>
@@ -237,7 +247,7 @@
             <!-- Mapa Mundial -->
             <div class="lg:col-span-2 bg-white rounded-lg card-shadow p-6">
                 <h3 class="text-lg font-semibold text-gray-800 mb-4">Mapa Mundial - Intensidade de Casos</h3>
-        
+
                 <!-- Filtro Métrica -->
                 <div class="flex items-center space-x-2 mb-4">
                     <select id="metricFilter"
@@ -247,129 +257,129 @@
                         <option value="recovered">Recuperados</option>
                     </select>
                 </div>
-        
+
                 <!-- Globo 3D -->
                 <div class=" relative flex justify-center border-2 border-gray-200 rounded-lg bg-blue-50">
                     <canvas id="globe" width="800" height="600"></canvas>
-                    </div>
                 </div>
             </div>
         </div>
-        <!-- Contêiner para limitar a largura -->
-        <div class="max-w-[90%] mx-auto">
-            <!-- Estatísticas por Região -->
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
-                <!-- América -->
-                <div id="america-stats" class="bg-white rounded-lg card-shadow p-6 border-l-4 border-blue-500">
-                    <div class="flex items-center justify-between">
-                        <div>
-                            <p class="text-sm font-medium text-gray-600">América</p>
-                            <p id="americaCases" class="text-2xl font-bold text-blue-600">Carregando...</p>
-                            <p class="text-xs text-gray-500 mt-1">Carregando...</p>
-                        </div>
-                        <div class="bg-blue-100 p-3 rounded-full">
-                            <svg class="w-6 h-6 text-blue-600" fill="currentColor" viewBox="0 0 20 20">
-                                <path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
-                            </svg>
-                        </div>
+    </div>
+    <!-- Contêiner para limitar a largura -->
+    <div class="max-w-[90%] mx-auto">
+        <!-- Estatísticas por Região -->
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+            <!-- América -->
+            <div id="america-stats" class="bg-white rounded-lg card-shadow p-6 border-l-4 border-blue-500">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <p class="text-sm font-medium text-gray-600">América</p>
+                        <p id="americaCases" class="text-2xl font-bold text-blue-600">Carregando...</p>
+                        <p class="text-xs text-gray-500 mt-1">Carregando...</p>
                     </div>
-                </div>
-        
-                <!-- Europa -->
-                <div id="europa-stats" class="bg-white rounded-lg card-shadow p-6 border-l-4 border-green-500">
-                    <div class="flex items-center justify-between">
-                        <div>
-                            <p class="text-sm font-medium text-gray-600">Europa</p>
-                            <p id="europaCases" class="text-2xl font-bold text-green-600">Carregando...</p>
-                            <p class="text-xs text-gray-500 mt-1">Carregando...</p>
-                        </div>
-                        <div class="bg-green-100 p-3 rounded-full">
-                            <svg class="w-6 h-6 text-green-600" fill="currentColor" viewBox="0 0 20 20">
-                                <path
-                                    d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" />
-                            </svg>
-                        </div>
-                    </div>
-                </div>
-        
-                <!-- Ásia -->
-                <div id="asia-stats" class="bg-white rounded-lg card-shadow p-6 border-l-4 border-yellow-500">
-                    <div class="flex items-center justify-between">
-                        <div>
-                            <p class="text-sm font-medium text-gray-600">Ásia</p>
-                            <p id="asiaCases" class="text-2xl font-bold text-yellow-600">Carregando...</p>
-                            <p class="text-xs text-gray-500 mt-1">Carregando...</p>
-                        </div>
-                        <div class="bg-yellow-100 p-3 rounded-full">
-                            <svg class="w-6 h-6 text-yellow-600" fill="currentColor" viewBox="0 0 20 20">
-                                <path d="M10 12a2 2 0 100-4 2 2 0 000 4z" />
-                                <path fill-rule="evenodd"
-                                    d="M.458 10C1.732 5.943 5.522 3 10 3s8.268 2.943 9.542 7c-1.274 4.057-5.064 7-9.542 7S1.732 14.057.458 10zM14 10a4 4 0 11-8 0 4 4 0 018 0z"
-                                    clip-rule="evenodd" />
-                            </svg>
-                        </div>
-                    </div>
-                </div>
-        
-                <!-- África -->
-                <div id="africa-stats" class="bg-white rounded-lg card-shadow p-6 border-l-4 border-purple-500">
-                    <div class="flex items-center justify-between">
-                        <div>
-                            <p class="text-sm font-medium text-gray-600">África</p>
-                            <p id="africaCases" class="text-2xl font-bold text-purple-600">Carregando...</p>
-                            <p class="text-xs text-gray-500 mt-1">Carregando...</p>
-                        </div>
-                        <div class="bg-purple-100 p-3 rounded-full">
-                            <svg class="w-6 h-6 text-purple-600" fill="currentColor" viewBox="0 0 20 20">
-                                <path
-                                    d="M10 20a10 10 0 100-20 10 10 0 000 20zM6.3 10a.7.7 0 11-1.4 0 .7.7 0 011.4 0zm4 0a.7.7 0 11-1.4 0 .7.7 0 011.4 0zm4 0a.7.7 0 11-1.4 0 .7.7 0 011.4 0z" />
-                            </svg>
-                        </div>
+                    <div class="bg-blue-100 p-3 rounded-full">
+                        <svg class="w-6 h-6 text-blue-600" fill="currentColor" viewBox="0 0 20 20">
+                            <path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                        </svg>
                     </div>
                 </div>
             </div>
-        </div>
 
-        <!-- Tabela de Dados Detalhados -->
-        <div class="col-span-2 detailed-country-data">
-            <h2 class="text-xl font-bold mb-4">Dados Detalhados por País</h2>
-            <table class="w-full bg-white shadow-md rounded-lg" id="countryTable">
-                <thead>
-                    <tr class="bg-gray-100">
-                        <th class="px-6 py-3 text-left text-sm font-semibold text-gray-600 cursor-pointer"
-                            data-sort="country">País <img width="16" height="16"
-                                src="https://img.icons8.com/ios-filled/50/sort.png" alt="sort"
-                                class="sort-icon inline-block ml-1" /></th>
-                        <th class="px-6 py-3 text-left text-sm font-semibold text-gray-600 cursor-pointer"
-                            data-sort="confirmed">Casos Totais <img width="16" height="16"
-                                src="https://img.icons8.com/ios-filled/50/sort.png" alt="sort"
-                                class="sort-icon inline-block ml-1" /></th>
-                        <th class="px-6 py-3 text-left text-sm font-semibold text-gray-600 cursor-pointer"
-                            data-sort="deaths">Mortes <img width="16" height="16"
-                                src="https://img.icons8.com/ios-filled/50/sort.png" alt="sort"
-                                class="sort-icon inline-block ml-1" /></th>
-                        <th class="px-6 py-3 text-left text-sm font-semibold text-gray-600 cursor-pointer"
-                            data-sort="recovered">Recuperados <img width="16" height="16"
-                                src="https://img.icons8.com/ios-filled/50/sort.png" alt="sort"
-                                class="sort-icon inline-block ml-1" /></th>
-                        <th class="px-6 py-3 text-left text-sm font-semibold text-gray-600 cursor-pointer"
-                            data-sort="mortality">Taxa de Mortalidade <img width="16" height="16"
-                                src="https://img.icons8.com/ios-filled/50/sort.png" alt="sort"
-                                class="sort-icon inline-block ml-1" /></th>
-                    </tr>
-                </thead>
-                <tbody id="countryTableBody"></tbody>
-            </table>
-            <div id="paginationContainer"></div> <!-- Adicionado -->
-        </div>
-
-        <!-- Footer -->
-        <footer class="bg-gray-800 text-white py-6 mt-12">
-            <div class="container mx-auto px-4 text-center">
-                <p>&copy; 2024 Dashboard COVID-19. Dados atualizados em tempo real.</p>
-                <p class="text-sm text-gray-400 mt-2">Fonte: Organizações de Saúde Mundiais</p>
+            <!-- Europa -->
+            <div id="europa-stats" class="bg-white rounded-lg card-shadow p-6 border-l-4 border-green-500">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <p class="text-sm font-medium text-gray-600">Europa</p>
+                        <p id="europaCases" class="text-2xl font-bold text-green-600">Carregando...</p>
+                        <p class="text-xs text-gray-500 mt-1">Carregando...</p>
+                    </div>
+                    <div class="bg-green-100 p-3 rounded-full">
+                        <svg class="w-6 h-6 text-green-600" fill="currentColor" viewBox="0 0 20 20">
+                            <path
+                                d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" />
+                        </svg>
+                    </div>
+                </div>
             </div>
-        </footer>
+
+            <!-- Ásia -->
+            <div id="asia-stats" class="bg-white rounded-lg card-shadow p-6 border-l-4 border-yellow-500">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <p class="text-sm font-medium text-gray-600">Ásia</p>
+                        <p id="asiaCases" class="text-2xl font-bold text-yellow-600">Carregando...</p>
+                        <p class="text-xs text-gray-500 mt-1">Carregando...</p>
+                    </div>
+                    <div class="bg-yellow-100 p-3 rounded-full">
+                        <svg class="w-6 h-6 text-yellow-600" fill="currentColor" viewBox="0 0 20 20">
+                            <path d="M10 12a2 2 0 100-4 2 2 0 000 4z" />
+                            <path fill-rule="evenodd"
+                                d="M.458 10C1.732 5.943 5.522 3 10 3s8.268 2.943 9.542 7c-1.274 4.057-5.064 7-9.542 7S1.732 14.057.458 10zM14 10a4 4 0 11-8 0 4 4 0 018 0z"
+                                clip-rule="evenodd" />
+                        </svg>
+                    </div>
+                </div>
+            </div>
+
+            <!-- África -->
+            <div id="africa-stats" class="bg-white rounded-lg card-shadow p-6 border-l-4 border-purple-500">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <p class="text-sm font-medium text-gray-600">África</p>
+                        <p id="africaCases" class="text-2xl font-bold text-purple-600">Carregando...</p>
+                        <p class="text-xs text-gray-500 mt-1">Carregando...</p>
+                    </div>
+                    <div class="bg-purple-100 p-3 rounded-full">
+                        <svg class="w-6 h-6 text-purple-600" fill="currentColor" viewBox="0 0 20 20">
+                            <path
+                                d="M10 20a10 10 0 100-20 10 10 0 000 20zM6.3 10a.7.7 0 11-1.4 0 .7.7 0 011.4 0zm4 0a.7.7 0 11-1.4 0 .7.7 0 011.4 0zm4 0a.7.7 0 11-1.4 0 .7.7 0 011.4 0z" />
+                        </svg>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Tabela de Dados Detalhados -->
+    <div class="col-span-2 detailed-country-data">
+        <h2 class="text-xl font-bold mb-4">Dados Detalhados por País</h2>
+        <table class="w-full bg-white shadow-md rounded-lg" id="countryTable">
+            <thead>
+                <tr class="bg-gray-100">
+                    <th class="px-6 py-3 text-left text-sm font-semibold text-gray-600 cursor-pointer"
+                        data-sort="country">País <img width="16" height="16"
+                            src="https://img.icons8.com/ios-filled/50/sort.png" alt="sort"
+                            class="sort-icon inline-block ml-1" /></th>
+                    <th class="px-6 py-3 text-left text-sm font-semibold text-gray-600 cursor-pointer"
+                        data-sort="confirmed">Casos Totais <img width="16" height="16"
+                            src="https://img.icons8.com/ios-filled/50/sort.png" alt="sort"
+                            class="sort-icon inline-block ml-1" /></th>
+                    <th class="px-6 py-3 text-left text-sm font-semibold text-gray-600 cursor-pointer"
+                        data-sort="deaths">Mortes <img width="16" height="16"
+                            src="https://img.icons8.com/ios-filled/50/sort.png" alt="sort"
+                            class="sort-icon inline-block ml-1" /></th>
+                    <th class="px-6 py-3 text-left text-sm font-semibold text-gray-600 cursor-pointer"
+                        data-sort="recovered">Recuperados <img width="16" height="16"
+                            src="https://img.icons8.com/ios-filled/50/sort.png" alt="sort"
+                            class="sort-icon inline-block ml-1" /></th>
+                    <th class="px-6 py-3 text-left text-sm font-semibold text-gray-600 cursor-pointer"
+                        data-sort="mortality">Taxa de Mortalidade <img width="16" height="16"
+                            src="https://img.icons8.com/ios-filled/50/sort.png" alt="sort"
+                            class="sort-icon inline-block ml-1" /></th>
+                </tr>
+            </thead>
+            <tbody id="countryTableBody"></tbody>
+        </table>
+        <div id="paginationContainer"></div> <!-- Adicionado -->
+    </div>
+
+    <!-- Footer -->
+    <footer class="bg-gray-800 text-white py-6 mt-12">
+        <div class="container mx-auto px-4 text-center">
+            <p>&copy; 2024 Dashboard COVID-19. Dados atualizados em tempo real.</p>
+            <p class="text-sm text-gray-400 mt-2">Fonte: Organizações de Saúde Mundiais</p>
+        </div>
+    </footer>
     </div>
 
     <!-- Botão de Chat Flutuante -->
@@ -462,16 +472,16 @@
     <div id="municipiosModal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center hidden z-50">
         <div
             class="bg-white dark:bg-gray-800 rounded-lg shadow-lg w-11/12 md:w-3/4 lg:w-2/3 max-h-[90%] overflow-hidden p-6 flex flex-col">
-    
+
             <div class="flex justify-between items-center mb-4">
                 <h2 id="municipiosTitle" class="text-xl font-bold text-white">Municípios</h2>
                 <button onclick="closeMunicipiosModal()" class="text-gray-500 hover:text-red-500 text-xl">✖</button>
             </div>
-    
+
             <!-- Barra de pesquisa -->
             <input type="text" id="municipiosSearch" placeholder="Pesquisar município..."
                 class="mb-4 p-2 border rounded focus:outline-none focus:ring focus:border-blue-300" />
-    
+
             <!-- Tabela -->
             <div class="overflow-y-auto flex-1">
                 <table class="min-w-full border-collapse" id="municipiosTable">
@@ -486,7 +496,7 @@
                     <tbody id="municipiosTableBody" class="bg-white"></tbody>
                 </table>
             </div>
-    
+
         </div>
     </div>
 
@@ -494,4 +504,3 @@
 </body>
 
 </html>
-

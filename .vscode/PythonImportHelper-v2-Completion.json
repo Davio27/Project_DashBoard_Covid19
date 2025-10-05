@@ -1,0 +1,532 @@
+[
+    {
+        "label": "os",
+        "kind": 6,
+        "isExtraImport": true,
+        "importPath": "os",
+        "description": "os",
+        "detail": "os",
+        "documentation": {}
+    },
+    {
+        "label": "requests",
+        "kind": 6,
+        "isExtraImport": true,
+        "importPath": "requests",
+        "description": "requests",
+        "detail": "requests",
+        "documentation": {}
+    },
+    {
+        "label": "pandas",
+        "kind": 6,
+        "isExtraImport": true,
+        "importPath": "pandas",
+        "description": "pandas",
+        "detail": "pandas",
+        "documentation": {}
+    },
+    {
+        "label": "datetime",
+        "importPath": "datetime",
+        "description": "datetime",
+        "isExtraImport": true,
+        "detail": "datetime",
+        "documentation": {}
+    },
+    {
+        "label": "timedelta",
+        "importPath": "datetime",
+        "description": "datetime",
+        "isExtraImport": true,
+        "detail": "datetime",
+        "documentation": {}
+    },
+    {
+        "label": "datetime",
+        "importPath": "datetime",
+        "description": "datetime",
+        "isExtraImport": true,
+        "detail": "datetime",
+        "documentation": {}
+    },
+    {
+        "label": "numpy",
+        "kind": 6,
+        "isExtraImport": true,
+        "importPath": "numpy",
+        "description": "numpy",
+        "detail": "numpy",
+        "documentation": {}
+    },
+    {
+        "label": "Flask",
+        "importPath": "flask",
+        "description": "flask",
+        "isExtraImport": true,
+        "detail": "flask",
+        "documentation": {}
+    },
+    {
+        "label": "render_template",
+        "importPath": "flask",
+        "description": "flask",
+        "isExtraImport": true,
+        "detail": "flask",
+        "documentation": {}
+    },
+    {
+        "label": "redirect",
+        "importPath": "flask",
+        "description": "flask",
+        "isExtraImport": true,
+        "detail": "flask",
+        "documentation": {}
+    },
+    {
+        "label": "url_for",
+        "importPath": "flask",
+        "description": "flask",
+        "isExtraImport": true,
+        "detail": "flask",
+        "documentation": {}
+    },
+    {
+        "label": "request",
+        "importPath": "flask",
+        "description": "flask",
+        "isExtraImport": true,
+        "detail": "flask",
+        "documentation": {}
+    },
+    {
+        "label": "jsonify",
+        "importPath": "flask",
+        "description": "flask",
+        "isExtraImport": true,
+        "detail": "flask",
+        "documentation": {}
+    },
+    {
+        "label": "sys",
+        "kind": 6,
+        "isExtraImport": true,
+        "importPath": "sys",
+        "description": "sys",
+        "detail": "sys",
+        "documentation": {}
+    },
+    {
+        "label": "load_covid_data",
+        "importPath": "main",
+        "description": "main",
+        "isExtraImport": true,
+        "detail": "main",
+        "documentation": {}
+    },
+    {
+        "label": "get_casos_brasil",
+        "importPath": "main",
+        "description": "main",
+        "isExtraImport": true,
+        "detail": "main",
+        "documentation": {}
+    },
+    {
+        "label": "get_casos_brasil_historico",
+        "importPath": "main",
+        "description": "main",
+        "isExtraImport": true,
+        "detail": "main",
+        "documentation": {}
+    },
+    {
+        "label": "get_casos_estados",
+        "importPath": "main",
+        "description": "main",
+        "isExtraImport": true,
+        "detail": "main",
+        "documentation": {}
+    },
+    {
+        "label": "get_casos_paises",
+        "importPath": "main",
+        "description": "main",
+        "isExtraImport": true,
+        "detail": "main",
+        "documentation": {}
+    },
+    {
+        "label": "get_covid19_data",
+        "importPath": "main",
+        "description": "main",
+        "isExtraImport": true,
+        "detail": "main",
+        "documentation": {}
+    },
+    {
+        "label": "get_continente_data",
+        "importPath": "main",
+        "description": "main",
+        "isExtraImport": true,
+        "detail": "main",
+        "documentation": {}
+    },
+    {
+        "label": "threading",
+        "kind": 6,
+        "isExtraImport": true,
+        "importPath": "threading",
+        "description": "threading",
+        "detail": "threading",
+        "documentation": {}
+    },
+    {
+        "label": "time",
+        "kind": 6,
+        "isExtraImport": true,
+        "importPath": "time",
+        "description": "time",
+        "detail": "time",
+        "documentation": {}
+    },
+    {
+        "label": "Job",
+        "importPath": "models",
+        "description": "models",
+        "isExtraImport": true,
+        "detail": "models",
+        "documentation": {}
+    },
+    {
+        "label": "Execution",
+        "importPath": "models",
+        "description": "models",
+        "isExtraImport": true,
+        "detail": "models",
+        "documentation": {}
+    },
+    {
+        "label": "db",
+        "importPath": "models",
+        "description": "models",
+        "isExtraImport": true,
+        "detail": "models",
+        "documentation": {}
+    },
+    {
+        "label": "subprocess",
+        "kind": 6,
+        "isExtraImport": true,
+        "importPath": "subprocess",
+        "description": "subprocess",
+        "detail": "subprocess",
+        "documentation": {}
+    },
+    {
+        "label": "update_from_who",
+        "kind": 2,
+        "importPath": "backend.carga",
+        "description": "backend.carga",
+        "peekOfCode": "def update_from_who():\n    url = \"https://covid19.who.int/WHO-COVID-19-global-data.csv\"\n    df = pd.read_csv(url)\n    # Filtre e processe (ex: group by country, continent)\n    # Adicione continent usando uma lib como pycountry_convert se precisar mapear\n    df.to_parquet(\"data/casos_todos_paises.parquet\")  # Sobrescreva\n    print(\"Dados atualizados da WHO!\")\ndef save_parquet(data, path):\n    \"\"\"Salva dados em parquet, apenas se não for vazio\"\"\"\n    if data is None or len(data) == 0:",
+        "detail": "backend.carga",
+        "documentation": {}
+    },
+    {
+        "label": "save_parquet",
+        "kind": 2,
+        "importPath": "backend.carga",
+        "description": "backend.carga",
+        "peekOfCode": "def save_parquet(data, path):\n    \"\"\"Salva dados em parquet, apenas se não for vazio\"\"\"\n    if data is None or len(data) == 0:\n        return\n    df = pd.DataFrame(data if isinstance(data, list) else [data])\n    df.to_parquet(path, index=False)\ndef casos_todos_estados():\n    \"\"\"Lista casos por todos os estados brasileiros\"\"\"\n    res = requests.get(f\"{BASE_URL}\").json()\n    save_parquet(res.get(\"data\", []), f\"{DATA_DIR}/estados/casos_estados.parquet\")",
+        "detail": "backend.carga",
+        "documentation": {}
+    },
+    {
+        "label": "casos_todos_estados",
+        "kind": 2,
+        "importPath": "backend.carga",
+        "description": "backend.carga",
+        "peekOfCode": "def casos_todos_estados():\n    \"\"\"Lista casos por todos os estados brasileiros\"\"\"\n    res = requests.get(f\"{BASE_URL}\").json()\n    save_parquet(res.get(\"data\", []), f\"{DATA_DIR}/estados/casos_estados.parquet\")\n    print(\"✅ Casos por todos estados salvos.\")\ndef casos_estado(uf: str):\n    \"\"\"Lista casos por estado brasileiro\"\"\"\n    res = requests.get(f\"{BASE_URL}/brazil/uf/{uf.lower()}\").json()\n    save_parquet(res, f\"{DATA_DIR}/estados/casos_estado_{uf.upper()}.parquet\")\n    print(f\"✅ Casos por estado ({uf.upper()}) salvos.\")",
+        "detail": "backend.carga",
+        "documentation": {}
+    },
+    {
+        "label": "casos_estado",
+        "kind": 2,
+        "importPath": "backend.carga",
+        "description": "backend.carga",
+        "peekOfCode": "def casos_estado(uf: str):\n    \"\"\"Lista casos por estado brasileiro\"\"\"\n    res = requests.get(f\"{BASE_URL}/brazil/uf/{uf.lower()}\").json()\n    save_parquet(res, f\"{DATA_DIR}/estados/casos_estado_{uf.upper()}.parquet\")\n    print(f\"✅ Casos por estado ({uf.upper()}) salvos.\")\ndef casos_brasil_data(start=\"20200318\", end=\"20221231\"):\n    \"\"\"Loop em todas as datas desde início até fim da pandemia\"\"\"\n    start_date = datetime.strptime(start, \"%Y%m%d\")\n    end_date = datetime.strptime(end, \"%Y%m%d\")\n    data_acumulada = []",
+        "detail": "backend.carga",
+        "documentation": {}
+    },
+    {
+        "label": "casos_brasil_data",
+        "kind": 2,
+        "importPath": "backend.carga",
+        "description": "backend.carga",
+        "peekOfCode": "def casos_brasil_data(start=\"20200318\", end=\"20221231\"):\n    \"\"\"Loop em todas as datas desde início até fim da pandemia\"\"\"\n    start_date = datetime.strptime(start, \"%Y%m%d\")\n    end_date = datetime.strptime(end, \"%Y%m%d\")\n    data_acumulada = []\n    while start_date <= end_date:\n        data_str = start_date.strftime(\"%Y%m%d\")\n        url = f\"{BASE_URL}/brazil/{data_str}\"\n        res = requests.get(url).json()\n        registros = res.get(\"data\", [])",
+        "detail": "backend.carga",
+        "documentation": {}
+    },
+    {
+        "label": "casos_pais",
+        "kind": 2,
+        "importPath": "backend.carga",
+        "description": "backend.carga",
+        "peekOfCode": "def casos_pais(pais=\"brazil\"):\n    \"\"\"Lista casos por país\"\"\"\n    res = requests.get(f\"{BASE_URL}/{pais.lower()}\").json()\n    save_parquet(res.get(\"data\", {}), f\"{DATA_DIR}/paises/casos_{pais.lower()}.parquet\")\n    print(f\"✅ Casos por país ({pais}) salvos.\")\ndef casos_todos_paises():\n    \"\"\"Lista casos de todos países\"\"\"\n    res = requests.get(f\"{BASE_URL}/countries\").json()\n    save_parquet(res.get(\"data\", []), f\"{DATA_DIR}/paises/casos_todos_paises.parquet\")\n    print(\"✅ Casos por todos os países salvos.\")",
+        "detail": "backend.carga",
+        "documentation": {}
+    },
+    {
+        "label": "casos_todos_paises",
+        "kind": 2,
+        "importPath": "backend.carga",
+        "description": "backend.carga",
+        "peekOfCode": "def casos_todos_paises():\n    \"\"\"Lista casos de todos países\"\"\"\n    res = requests.get(f\"{BASE_URL}/countries\").json()\n    save_parquet(res.get(\"data\", []), f\"{DATA_DIR}/paises/casos_todos_paises.parquet\")\n    print(\"✅ Casos por todos os países salvos.\")\ndef status_api():\n    \"\"\"Consulta status da API\"\"\"\n    res = requests.get(\"https://covid19-brazil-api.now.sh/api/status/v1\").json()\n    save_parquet(res, f\"{DATA_DIR}/status_api.parquet\")\n    print(\"✅ Status da API salvo.\")",
+        "detail": "backend.carga",
+        "documentation": {}
+    },
+    {
+        "label": "status_api",
+        "kind": 2,
+        "importPath": "backend.carga",
+        "description": "backend.carga",
+        "peekOfCode": "def status_api():\n    \"\"\"Consulta status da API\"\"\"\n    res = requests.get(\"https://covid19-brazil-api.now.sh/api/status/v1\").json()\n    save_parquet(res, f\"{DATA_DIR}/status_api.parquet\")\n    print(\"✅ Status da API salvo.\")\nif __name__ == \"__main__\":\n    print(\"Extraindo dados Covid19...\")\n    casos_todos_estados()\n    casos_estado(\"sp\")\n    casos_brasil_data()  # histórico completo",
+        "detail": "backend.carga",
+        "documentation": {}
+    },
+    {
+        "label": "BASE_URL",
+        "kind": 5,
+        "importPath": "backend.carga",
+        "description": "backend.carga",
+        "peekOfCode": "BASE_URL = \"https://covid19-brazil-api.now.sh/api/report/v1\"\nDATA_DIR = \"data\"\nos.makedirs(DATA_DIR, exist_ok=True)\nos.makedirs(f\"{DATA_DIR}/estados\", exist_ok=True)\nos.makedirs(f\"{DATA_DIR}/paises\", exist_ok=True)\nos.makedirs(f\"{DATA_DIR}/brasil\", exist_ok=True)\nos.makedirs(f\"{DATA_DIR}/historico\", exist_ok=True)\ndef update_from_who():\n    url = \"https://covid19.who.int/WHO-COVID-19-global-data.csv\"\n    df = pd.read_csv(url)",
+        "detail": "backend.carga",
+        "documentation": {}
+    },
+    {
+        "label": "DATA_DIR",
+        "kind": 5,
+        "importPath": "backend.carga",
+        "description": "backend.carga",
+        "peekOfCode": "DATA_DIR = \"data\"\nos.makedirs(DATA_DIR, exist_ok=True)\nos.makedirs(f\"{DATA_DIR}/estados\", exist_ok=True)\nos.makedirs(f\"{DATA_DIR}/paises\", exist_ok=True)\nos.makedirs(f\"{DATA_DIR}/brasil\", exist_ok=True)\nos.makedirs(f\"{DATA_DIR}/historico\", exist_ok=True)\ndef update_from_who():\n    url = \"https://covid19.who.int/WHO-COVID-19-global-data.csv\"\n    df = pd.read_csv(url)\n    # Filtre e processe (ex: group by country, continent)",
+        "detail": "backend.carga",
+        "documentation": {}
+    },
+    {
+        "label": "load_covid_data",
+        "kind": 2,
+        "importPath": "backend.main",
+        "description": "backend.main",
+        "peekOfCode": "def load_covid_data():\n    data = {}\n    data[\"brasil\"] = pd.read_parquet(\"data/casos_brazil.parquet\")\n    data[\"brasil_historico\"] = pd.read_parquet(\"data/casos_brasil_historico.parquet\")\n    data[\"estados\"] = pd.read_parquet(\"data/casos_estados_brasil.parquet\")\n    data[\"paises\"] = pd.read_parquet(\"data/casos_todos_paises.parquet\")\n    data[\"covid19\"] = pd.read_parquet(\"data/covid19.parquet\")\n    return data\ndef get_casos_municipios(uf):\n    df = pd.read_parquet(\"data/casos_municipios_brasil.parquet\")",
+        "detail": "backend.main",
+        "documentation": {}
+    },
+    {
+        "label": "get_casos_municipios",
+        "kind": 2,
+        "importPath": "backend.main",
+        "description": "backend.main",
+        "peekOfCode": "def get_casos_municipios(uf):\n    df = pd.read_parquet(\"data/casos_municipios_brasil.parquet\")\n    df = df[df[\"UF\"] == uf]\n    return df.to_dict(orient=\"records\")\ndef get_casos_brasil():\n    df = pd.read_parquet(\"data/casos_brazil.parquet\")\n    df['updated_at'] = pd.to_datetime(df['updated_at'])\n    latest = df.iloc[-1]\n    confirmed = int(latest.get('confirmed', 0) if not pd.isna(latest.get('confirmed')) else 0)\n    deaths = int(latest.get('deaths', 0) if not pd.isna(latest.get('deaths')) else 0)",
+        "detail": "backend.main",
+        "documentation": {}
+    },
+    {
+        "label": "get_casos_brasil",
+        "kind": 2,
+        "importPath": "backend.main",
+        "description": "backend.main",
+        "peekOfCode": "def get_casos_brasil():\n    df = pd.read_parquet(\"data/casos_brazil.parquet\")\n    df['updated_at'] = pd.to_datetime(df['updated_at'])\n    latest = df.iloc[-1]\n    confirmed = int(latest.get('confirmed', 0) if not pd.isna(latest.get('confirmed')) else 0)\n    deaths = int(latest.get('deaths', 0) if not pd.isna(latest.get('deaths')) else 0)\n    cases = int(latest.get('cases', confirmed) if not pd.isna(latest.get('cases', confirmed)) else confirmed)\n    recovered = int(latest.get('recovered', confirmed - deaths) if not pd.isna(latest.get('recovered', confirmed - deaths)) else (confirmed - deaths))\n    return {\n        'country': str(latest.get('country', 'Brazil')),",
+        "detail": "backend.main",
+        "documentation": {}
+    },
+    {
+        "label": "get_casos_brasil_historico",
+        "kind": 2,
+        "importPath": "backend.main",
+        "description": "backend.main",
+        "peekOfCode": "def get_casos_brasil_historico():\n    df = pd.read_parquet(\"data/covid_brazil_historico.parquet\")\n    df['date'] = pd.to_datetime(df['date'], dayfirst=True, errors=\"coerce\")\n    return df.to_dict(orient=\"records\")\ndef get_continente_data():\n    # Agrupar por continente e somar casos confirmados\n    df_grouped = df_paises.groupby(\"continent\")[\"confirmed\"].sum().reset_index()\n    df_grouped['continent'] = df_grouped['continent'].replace({'North America': 'América', 'South America': 'América'})\n    df_grouped = df_grouped.groupby('continent')['confirmed'].sum().reset_index()\n    df_grouped = df_grouped[df_grouped['continent'] != 'Antarctica']",
+        "detail": "backend.main",
+        "documentation": {}
+    },
+    {
+        "label": "get_continente_data",
+        "kind": 2,
+        "importPath": "backend.main",
+        "description": "backend.main",
+        "peekOfCode": "def get_continente_data():\n    # Agrupar por continente e somar casos confirmados\n    df_grouped = df_paises.groupby(\"continent\")[\"confirmed\"].sum().reset_index()\n    df_grouped['continent'] = df_grouped['continent'].replace({'North America': 'América', 'South America': 'América'})\n    df_grouped = df_grouped.groupby('continent')['confirmed'].sum().reset_index()\n    df_grouped = df_grouped[df_grouped['continent'] != 'Antarctica']\n    return df_grouped.to_dict(orient=\"records\")\ndef get_casos_estados():\n    df = pd.read_parquet(\"data/casos_estados_brasil.parquet\")\n    df['datetime'] = pd.to_datetime(df['datetime'])",
+        "detail": "backend.main",
+        "documentation": {}
+    },
+    {
+        "label": "get_casos_estados",
+        "kind": 2,
+        "importPath": "backend.main",
+        "description": "backend.main",
+        "peekOfCode": "def get_casos_estados():\n    df = pd.read_parquet(\"data/casos_estados_brasil.parquet\")\n    df['datetime'] = pd.to_datetime(df['datetime'])\n    return df.to_dict(orient=\"records\")\ndef get_casos_paises():\n    df = pd.read_parquet(\"data/casos_todos_paises.parquet\")\n    df['updated_at'] = pd.to_datetime(df['updated_at'])\n    return df.to_dict(orient=\"records\")\ndef get_covid19_data():\n    df = pd.read_parquet(\"data/covid19.parquet\")",
+        "detail": "backend.main",
+        "documentation": {}
+    },
+    {
+        "label": "get_casos_paises",
+        "kind": 2,
+        "importPath": "backend.main",
+        "description": "backend.main",
+        "peekOfCode": "def get_casos_paises():\n    df = pd.read_parquet(\"data/casos_todos_paises.parquet\")\n    df['updated_at'] = pd.to_datetime(df['updated_at'])\n    return df.to_dict(orient=\"records\")\ndef get_covid19_data():\n    df = pd.read_parquet(\"data/covid19.parquet\")\n    df['last_available_date'] = pd.to_datetime(df['last_available_date'])\n    return df.to_dict(orient=\"records\")",
+        "detail": "backend.main",
+        "documentation": {}
+    },
+    {
+        "label": "get_covid19_data",
+        "kind": 2,
+        "importPath": "backend.main",
+        "description": "backend.main",
+        "peekOfCode": "def get_covid19_data():\n    df = pd.read_parquet(\"data/covid19.parquet\")\n    df['last_available_date'] = pd.to_datetime(df['last_available_date'])\n    return df.to_dict(orient=\"records\")",
+        "detail": "backend.main",
+        "documentation": {}
+    },
+    {
+        "label": "df_paises",
+        "kind": 5,
+        "importPath": "backend.main",
+        "description": "backend.main",
+        "peekOfCode": "df_paises = pd.read_parquet(\"data/casos_todos_paises.parquet\")\ndef load_covid_data():\n    data = {}\n    data[\"brasil\"] = pd.read_parquet(\"data/casos_brazil.parquet\")\n    data[\"brasil_historico\"] = pd.read_parquet(\"data/casos_brasil_historico.parquet\")\n    data[\"estados\"] = pd.read_parquet(\"data/casos_estados_brasil.parquet\")\n    data[\"paises\"] = pd.read_parquet(\"data/casos_todos_paises.parquet\")\n    data[\"covid19\"] = pd.read_parquet(\"data/covid19.parquet\")\n    return data\ndef get_casos_municipios(uf):",
+        "detail": "backend.main",
+        "documentation": {}
+    },
+    {
+        "label": "login",
+        "kind": 2,
+        "importPath": "app",
+        "description": "app",
+        "peekOfCode": "def login():\n    return render_template('login.html')\n@app.route('/dashboard')\ndef dashboard():\n    return render_template('index.html')\n@app.route('/login', methods=['POST'])\ndef handle_login():\n    email = request.form.get('email')\n    password = request.form.get('password')\n    if email and password:",
+        "detail": "app",
+        "documentation": {}
+    },
+    {
+        "label": "dashboard",
+        "kind": 2,
+        "importPath": "app",
+        "description": "app",
+        "peekOfCode": "def dashboard():\n    return render_template('index.html')\n@app.route('/login', methods=['POST'])\ndef handle_login():\n    email = request.form.get('email')\n    password = request.form.get('password')\n    if email and password:\n        return redirect(url_for('dashboard'))\n    return redirect(url_for('login'))\n@app.route('/api/continentes')",
+        "detail": "app",
+        "documentation": {}
+    },
+    {
+        "label": "handle_login",
+        "kind": 2,
+        "importPath": "app",
+        "description": "app",
+        "peekOfCode": "def handle_login():\n    email = request.form.get('email')\n    password = request.form.get('password')\n    if email and password:\n        return redirect(url_for('dashboard'))\n    return redirect(url_for('login'))\n@app.route('/api/continentes')\ndef api_continentes():\n    return jsonify(get_continente_data())\n@app.route('/logout')",
+        "detail": "app",
+        "documentation": {}
+    },
+    {
+        "label": "api_continentes",
+        "kind": 2,
+        "importPath": "app",
+        "description": "app",
+        "peekOfCode": "def api_continentes():\n    return jsonify(get_continente_data())\n@app.route('/logout')\ndef logout():\n    return redirect(url_for('login'))\n# APIs\n@app.route('/api/brasil')\ndef api_brasil():\n    brasil_data = get_casos_brasil()\n    return jsonify(brasil_data)",
+        "detail": "app",
+        "documentation": {}
+    },
+    {
+        "label": "logout",
+        "kind": 2,
+        "importPath": "app",
+        "description": "app",
+        "peekOfCode": "def logout():\n    return redirect(url_for('login'))\n# APIs\n@app.route('/api/brasil')\ndef api_brasil():\n    brasil_data = get_casos_brasil()\n    return jsonify(brasil_data)\n@app.route('/api/brasil/historico')\ndef api_brasil_historico():\n    historico = get_casos_brasil_historico()",
+        "detail": "app",
+        "documentation": {}
+    },
+    {
+        "label": "api_brasil",
+        "kind": 2,
+        "importPath": "app",
+        "description": "app",
+        "peekOfCode": "def api_brasil():\n    brasil_data = get_casos_brasil()\n    return jsonify(brasil_data)\n@app.route('/api/brasil/historico')\ndef api_brasil_historico():\n    historico = get_casos_brasil_historico()\n    return jsonify(historico)\n@app.route('/api/estados')\ndef api_estados():\n    estados = get_casos_estados()",
+        "detail": "app",
+        "documentation": {}
+    },
+    {
+        "label": "api_brasil_historico",
+        "kind": 2,
+        "importPath": "app",
+        "description": "app",
+        "peekOfCode": "def api_brasil_historico():\n    historico = get_casos_brasil_historico()\n    return jsonify(historico)\n@app.route('/api/estados')\ndef api_estados():\n    estados = get_casos_estados()\n    return jsonify(estados)\n@app.route('/api/paises')\ndef api_paises():\n    paises = get_casos_paises()",
+        "detail": "app",
+        "documentation": {}
+    },
+    {
+        "label": "api_estados",
+        "kind": 2,
+        "importPath": "app",
+        "description": "app",
+        "peekOfCode": "def api_estados():\n    estados = get_casos_estados()\n    return jsonify(estados)\n@app.route('/api/paises')\ndef api_paises():\n    paises = get_casos_paises()\n    return jsonify(paises)\n@app.route('/api/covid19')\ndef api_covid19():\n    covid19 = get_covid19_data()",
+        "detail": "app",
+        "documentation": {}
+    },
+    {
+        "label": "api_paises",
+        "kind": 2,
+        "importPath": "app",
+        "description": "app",
+        "peekOfCode": "def api_paises():\n    paises = get_casos_paises()\n    return jsonify(paises)\n@app.route('/api/covid19')\ndef api_covid19():\n    covid19 = get_covid19_data()\n    return jsonify(covid19)\n@app.route('/api/municipios/<uf>')\ndef api_municipios(uf):\n    from main import get_casos_municipios",
+        "detail": "app",
+        "documentation": {}
+    },
+    {
+        "label": "api_covid19",
+        "kind": 2,
+        "importPath": "app",
+        "description": "app",
+        "peekOfCode": "def api_covid19():\n    covid19 = get_covid19_data()\n    return jsonify(covid19)\n@app.route('/api/municipios/<uf>')\ndef api_municipios(uf):\n    from main import get_casos_municipios\n    municipios = get_casos_municipios(uf.upper())\n    return jsonify(municipios)\nif __name__ == '__main__':\n    app.run(debug=True)",
+        "detail": "app",
+        "documentation": {}
+    },
+    {
+        "label": "api_municipios",
+        "kind": 2,
+        "importPath": "app",
+        "description": "app",
+        "peekOfCode": "def api_municipios(uf):\n    from main import get_casos_municipios\n    municipios = get_casos_municipios(uf.upper())\n    return jsonify(municipios)\nif __name__ == '__main__':\n    app.run(debug=True)",
+        "detail": "app",
+        "documentation": {}
+    },
+    {
+        "label": "app",
+        "kind": 5,
+        "importPath": "app",
+        "description": "app",
+        "peekOfCode": "app = Flask(__name__)\n@app.route('/')\ndef login():\n    return render_template('login.html')\n@app.route('/dashboard')\ndef dashboard():\n    return render_template('index.html')\n@app.route('/login', methods=['POST'])\ndef handle_login():\n    email = request.form.get('email')",
+        "detail": "app",
+        "documentation": {}
+    },
+    {
+        "label": "execute_job",
+        "kind": 2,
+        "importPath": "scheduler",
+        "description": "scheduler",
+        "peekOfCode": "def execute_job(job):\n    # Lógica de execução de jobs, dependências, retries etc.\n    exec_entry = Execution(job_id=job.id, status='running', start_time=datetime.utcnow())\n    db.session.add(exec_entry)\n    db.session.commit()\n    try:\n        # Executa o comando do job\n        subprocess.run(job.command, shell=True, check=True, timeout=job.timeout*60)\n        exec_entry.status = 'success'\n        exec_entry.logs = f'Job {job.name} executado com sucesso!'",
+        "detail": "scheduler",
+        "documentation": {}
+    },
+    {
+        "label": "scheduler_loop",
+        "kind": 2,
+        "importPath": "scheduler",
+        "description": "scheduler",
+        "peekOfCode": "def scheduler_loop():\n    while True:\n        # Aqui você verifica todos os jobs ativos e horários para executar\n        time.sleep(5)\ndef start_scheduler(app, db):\n    thread = threading.Thread(target=scheduler_loop, daemon=True)\n    thread.start()",
+        "detail": "scheduler",
+        "documentation": {}
+    },
+    {
+        "label": "start_scheduler",
+        "kind": 2,
+        "importPath": "scheduler",
+        "description": "scheduler",
+        "peekOfCode": "def start_scheduler(app, db):\n    thread = threading.Thread(target=scheduler_loop, daemon=True)\n    thread.start()",
+        "detail": "scheduler",
+        "documentation": {}
+    }
+]

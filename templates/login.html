@@ -5,8 +5,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login - Dashboard COVID-19</title>
+    <link rel="icon" type="image/png" href="{{ url_for('static', filename='img/icone.png') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
     <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="stylesheet" href="/static/styles.css">
 </head>
 
 <body class="bg-gray-50 font-sans">
@@ -20,10 +21,11 @@
         <div class="login-card">
             <div class="text-center mb-8">
                 <div
-                    class="w-16 h-16 bg-gradient-to-r from-blue-500 to-purple-600 rounded-full mx-auto mb-4 flex items-center justify-center">
-                    <svg class="w-8 h-8 text-white" fill="currentColor" viewBox="0 0 20 20">
-                        <path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
-                    </svg>
+                    class="w-19 h-19 from-blue-500 to-purple-600 rounded-full mx-auto mb-4 flex items-center justify-center">
+                    <div class="w-19 h-19 rounded-full mx-auto mb-2 flex items-center justify-center bg-white p-2">
+                        <img src="https://img.icons8.com/external-flatart-icons-flat-flatarticons/64/external-covid-19-corona-virus-flatart-icons-flat-flatarticons.png"
+                            alt="Covid-19 Icon" class="w-full h-full object-contain">
+                    </div>
                 </div>
                 <h1 class="text-2xl font-bold text-gray-800 mb-2">Dashboard COVID-19</h1>
                 <p class="text-gray-600">Faça login para acessar os dados</p>
@@ -35,19 +37,16 @@
                     <label for="email">Email</label>
                 </div>
 
-                <div class="input-group">
+                <div class="input-group relative">
                     <input type="password" id="password" placeholder=" " required>
                     <label for="password">Senha</label>
-                    <button type="button" onclick="togglePasswordVisibility()"
-                        class="absolute right-3 top-3 text-gray-500 hover:text-gray-700 focus:outline-none">
-                        <svg id="eyeIcon" class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
-                            <path d="M10 12a2 2 0 100-4 2 2 0 000 4z" />
-                            <path fill-rule="evenodd"
-                                d="M.458 10C1.732 5.943 5.522 3 10 3s8.268 2.943 9.542 7c-1.274 4.057-5.064 7-9.542 7S1.732 14.057.458 10zM14 10a4 4 0 11-8 0 4 4 0 018 0z"
-                                clip-rule="evenodd" />
-                        </svg>
+                    <button type="button" id="togglePasswordBtn"
+                        class="absolute right-2 top-2 flex items-center justify-center w-10 h-10">
+                        <img id="eyeImg" src="https://img.icons8.com/ios/50/closed-eye.png" alt="invisible"
+                            class="w-full h-full">
                     </button>
                 </div>
+
 
                 <div class="flex items-center justify-between">
                     <label class="flex items-center">
@@ -83,4 +82,3 @@
 </body>
 
 </html>
-
