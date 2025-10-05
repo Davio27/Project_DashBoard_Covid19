@@ -307,17 +307,29 @@
      display: flex;
      align-items: center;
      justify-content: center;
+     width: 100%;
+     box-sizing: border-box;
+     padding: 0 1rem;
+     /* garante espaçamento mínimo nas laterais */
  }
 
+ /* Card de login */
  .login-card {
+     width: 100%;
+     max-width: 400px;
+     /* ou outro valor desejado */
      background: rgba(255, 255, 255, 0.95);
-     backdrop-filter: blur(10px);
      border-radius: 20px;
      padding: 2rem;
      box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
-     width: 100%;
-     max-width: 400px;
      animation: slideUp 0.6s ease-out;
+ }
+
+ /* Em telas pequenas, limita a largura do card para 90% da tela */
+ @media (max-width: 640px) {
+     .login-card {
+         max-width: 90%;
+     }
  }
 
  .dark .login-card {
