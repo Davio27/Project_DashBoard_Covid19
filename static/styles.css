@@ -44,6 +44,13 @@
      z-index: 1000;
  }
 
+ #globe {
+     width: 100%;
+     /* Garante que o canvas ocupe toda a largura do container */
+     height: auto;
+     /* Mantém a proporção do canvas */
+ }
+
  .dark-theme .tooltip {
      background-color: #333;
      color: white;

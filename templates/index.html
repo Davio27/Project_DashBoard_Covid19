@@ -7,7 +7,6 @@
     <title>Dashboard COVID-19</title>
     <link rel="icon" type="image/png" href="{{ url_for('static', filename='img/icone.png') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="https://d3js.org/d3.v7.min.js"></script>
@@ -17,39 +16,39 @@
 
 <body class="bg-gray-50 font-sans">
     <!-- Botão de Alternância de Tema -->
-    <button onclick="alternarTema()" class="theme-toggle" title="Alternar tema">
+    <button onclick="alternarTema()" class="theme-toggle flex" title="Alternar tema">
         <span class="theme-icon">🌙</span>
     </button>
 
     <!-- Dashboard Principal -->
     <div id="dashboardContent">
         <!-- Header -->
-        <header class="gradient-bg text-white py-6 mb-8 relative">
-            <div class="container mx-auto px-4 relative">
-                <div class="flex items-center justify-center">
+        <header class="gradient-bg text-white py-4 mb-6 relative">
+            <div class="container mx-auto px-4 relative flex flex-col items-center sm:flex-row sm:justify-center">
 
-                    <!-- Título centralizado -->
-                    <div class="text-center">
-                        <h1 class="text-3xl font-bold">Dashboard COVID-19</h1>
-                        <p class="mt-2 opacity-90">Monitoramento Global dos Casos de COVID-19 🦠</p>
-                    </div>
+                <!-- Ícone no canto esquerdo -->
+                <img class="w-12 h-12 sm:w-16 sm:h-16 absolute left-2 top-2 sm:top-1/2 sm:-translate-y-1/2"
+                    src="{{ url_for('static', filename='img/icone.png') }}" alt="covid-19" />
 
-                    <!-- Ícone no canto esquerdo -->
-                    <img class="w-16 h-16 absolute left-0 top-1/2 -translate-y-1/2"
-                        src="{{ url_for('static', filename='img/icone.png') }}" alt="covid-19" />
-
-                    <!-- Botão de logout no canto direito -->
-                    <button onclick="logout()"
-                        class="bg-white bg-opacity-20 hover:bg-opacity-30 text-white px-4 py-2 rounded-lg transition-all duration-200 flex items-center space-x-2 absolute right-0 top-1/2 -translate-y-1/2">
-                        <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
-                            <path fill-rule="evenodd"
-                                d="M3 3a1 1 0 00-1 1v12a1 1 0 102 0V4a1 1 0 00-1-1zm10.293 9.293a1 1 0 001.414 1.414l3-3a1 1 0 000-1.414l-3-3a1 1 0 10-1.414 1.414L14.586 9H7a1 1 0 100 2h7.586l-1.293 1.293z"
-                                clip-rule="evenodd" />
-                        </svg>
-                        <span>Sair</span>
-                    </button>
-
+                <!-- Título centralizado -->
+                <div class="text-center">
+                    <h1 class="text-xl sm:text-2xl md:text-3xl font-bold">Dashboard COVID-19</h1>
+                    <p class="mt-1 sm:mt-2 opacity-90 text-sm sm:text-base">Monitoramento dos Casos de COVID-19 🦠</p>
                 </div>
+
+                <!-- Botão de logout -->
+                <button onclick="logout()" class="bg-white bg-opacity-20 hover:bg-opacity-30 text-white 
+                     px-2 py-1 sm:px-4 sm:py-2 rounded-lg transition-all duration-200 
+                     flex items-center space-x-1 sm:space-x-2 
+                     text-xs sm:text-sm absolute right-2 top-2 sm:top-1/2 sm:-translate-y-1/2">
+                    <svg class="w-3 h-3 sm:w-4 sm:h-4" fill="currentColor" viewBox="0 0 20 20">
+                        <path fill-rule="evenodd"
+                            d="M3 3a1 1 0 00-1 1v12a1 1 0 102 0V4a1 1 0 00-1-1zm10.293 9.293a1 1 0 001.414 1.414l3-3a1 1 0 000-1.414l-3-3a1 1 0 10-1.414 1.414L14.586 9H7a1 1 0 100 2h7.586l-1.293 1.293z"
+                            clip-rule="evenodd" />
+                    </svg>
+                    <span>Sair</span>
+                </button>
+
             </div>
         </header>
 
@@ -202,15 +201,15 @@
             <div class="bg-white rounded-lg card-shadow p-6 mb-6">
                 <div class="flex flex-col sm:flex-row sm:justify-between sm:items-center mb-4">
                     <h3 class="text-lg font-semibold text-gray-800">Distribuição por Estados do Brasil</h3>
-                    <select id="weeklyMetric" onchange="updateWeeklyTrendChart(globalEstadosData, this.value)"
+                    <select id="weeklyMetric" onchange="distribuicaoporestado(globalEstadosData, this.value)"
                         class="w-40 sm:w-auto px-3 py-1 text-xs border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500">
                         <option value="cases">Casos Confirmados</option>
                         <option value="deaths">Total de Mortes</option>
                         <option value="recovered">Recuperados</option>
                     </select>
                 </div>
-                <div class="relative h-80">
-                    <canvas id="weeklyTrendChart"></canvas>
+                <div class="relative h-96 overflow-x-auto">
+                    <canvas id="weeklyTrendChart" class="min-w-[600px]"></canvas>
                 </div>
             </div>
         </div>
@@ -341,37 +340,54 @@
     </div>
 
     <!-- Tabela de Dados Detalhados -->
-    <div class="col-span-2 detailed-country-data">
-        <h2 class="text-xl font-bold mb-4">Dados Detalhados por País</h2>
-        <table class="w-full bg-white shadow-md rounded-lg" id="countryTable">
-            <thead>
-                <tr class="bg-gray-100">
-                    <th class="px-6 py-3 text-left text-sm font-semibold text-gray-600 cursor-pointer"
-                        data-sort="country">País <img width="16" height="16"
-                            src="https://img.icons8.com/ios-filled/50/sort.png" alt="sort"
-                            class="sort-icon inline-block ml-1" /></th>
-                    <th class="px-6 py-3 text-left text-sm font-semibold text-gray-600 cursor-pointer"
-                        data-sort="confirmed">Casos Totais <img width="16" height="16"
-                            src="https://img.icons8.com/ios-filled/50/sort.png" alt="sort"
-                            class="sort-icon inline-block ml-1" /></th>
-                    <th class="px-6 py-3 text-left text-sm font-semibold text-gray-600 cursor-pointer"
-                        data-sort="deaths">Mortes <img width="16" height="16"
-                            src="https://img.icons8.com/ios-filled/50/sort.png" alt="sort"
-                            class="sort-icon inline-block ml-1" /></th>
-                    <th class="px-6 py-3 text-left text-sm font-semibold text-gray-600 cursor-pointer"
-                        data-sort="recovered">Recuperados <img width="16" height="16"
-                            src="https://img.icons8.com/ios-filled/50/sort.png" alt="sort"
-                            class="sort-icon inline-block ml-1" /></th>
-                    <th class="px-6 py-3 text-left text-sm font-semibold text-gray-600 cursor-pointer"
-                        data-sort="mortality">Taxa de Mortalidade <img width="16" height="16"
-                            src="https://img.icons8.com/ios-filled/50/sort.png" alt="sort"
-                            class="sort-icon inline-block ml-1" /></th>
-                </tr>
-            </thead>
-            <tbody id="countryTableBody"></tbody>
-        </table>
-        <div id="paginationContainer"></div> <!-- Adicionado -->
+    <div class="col-span-2 flex justify-center">
+        <div class="flex flex-col w-[95%] bg-white shadow-md rounded-lg p-6 overflow-x-auto detailed-country-data">
+
+            <h2 class="text-xl font-bold mb-4 text-gray-800">Dados Detalhados por País</h2>
+
+            <div class="overflow-x-auto">
+                <table class="min-w-full border-collapse" id="countryTable">
+                    <thead class="bg-gray-100 sticky top-0 z-10">
+                        <tr>
+                            <th class="px-6 py-3 text-left text-sm font-semibold text-gray-600 cursor-pointer"
+                                data-sort="country">
+                                País <img width="16" height="16" src="https://img.icons8.com/ios-filled/50/sort.png"
+                                    alt="sort" class="sort-icon inline-block ml-1" />
+                            </th>
+                            <th class="px-6 py-3 text-left text-sm font-semibold text-gray-600 cursor-pointer"
+                                data-sort="confirmed">
+                                Casos Totais <img width="16" height="16"
+                                    src="https://img.icons8.com/ios-filled/50/sort.png" alt="sort"
+                                    class="sort-icon inline-block ml-1" />
+                            </th>
+                            <th class="px-6 py-3 text-left text-sm font-semibold text-gray-600 cursor-pointer"
+                                data-sort="deaths">
+                                Mortes <img width="16" height="16" src="https://img.icons8.com/ios-filled/50/sort.png"
+                                    alt="sort" class="sort-icon inline-block ml-1" />
+                            </th>
+                            <th class="px-6 py-3 text-left text-sm font-semibold text-gray-600 cursor-pointer"
+                                data-sort="recovered">
+                                Recuperados <img width="16" height="16"
+                                    src="https://img.icons8.com/ios-filled/50/sort.png" alt="sort"
+                                    class="sort-icon inline-block ml-1" />
+                            </th>
+                            <th class="px-6 py-3 text-left text-sm font-semibold text-gray-600 cursor-pointer"
+                                data-sort="mortality">
+                                Taxa de Mortalidade <img width="16" height="16"
+                                    src="https://img.icons8.com/ios-filled/50/sort.png" alt="sort"
+                                    class="sort-icon inline-block ml-1" />
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody id="countryTableBody" class="bg-white dark:bg-gray-50"></tbody>
+                </table>
+            </div>
+
+            <div id="paginationContainer" class="text-black"></div>
+        </div>
     </div>
+
+
 
     <!-- Footer -->
     <footer class="bg-gray-800 text-white py-6 mt-12">
@@ -499,7 +515,6 @@
 
         </div>
     </div>
-
     <script src="{{ url_for('static', filename='scriptdash.js') }}"></script>
 </body>
 

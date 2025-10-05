@@ -2,6 +2,7 @@ let timelineChart, countriesChart, continentChart, weeklyTrendChart, radarChart;
 let sortConfig = { key: null, direction: 'asc' };
 let globalCountriesData = [];
 let globalHistoricoData = [];
+let globalContinentesData = [];
 let globalEstadosData = [];
 let globeContext, globePath, globeProjection;
 let globeData = []; // dados parquet /api/paises
@@ -220,8 +221,9 @@ async function loadData() {
         const continentesRes = await fetch('/api/continentes');
         const continentesData = await continentesRes.json();
         if (continentesData && continentesData.length > 0) {
-            distribuicaoporcontinente(continentesData);
-            updateRegionStats(continentesData);
+            globalContinentesData = continentesData;
+            distribuicaoporcontinente(globalContinentesData);
+            updateRegionStats(globalContinentesData);
         }
 
 
@@ -289,11 +291,8 @@ async function initGlobe() {
         globeData = await res.json();
 
         isLoaded = true; // Marca como carregado só após ambos awaits
-
-        // inicializa drag/zoom só após carregado
-        d3.select(canvas)
-            .call(dragGlobe(globeProjection).on("drag.render", renderGlobe))
-            .call(renderGlobe);
+        d3.select(canvas).call(dragGlobe(globeProjection));
+        renderGlobe(); // Chamada de renderização inicial
 
         // Adicione redraw automático para eventos comuns pós-refresh
         window.addEventListener('resize', renderGlobe);
@@ -313,19 +312,29 @@ function setMetric(metric) {
 }
 
 function renderGlobe() {
+    // 1. Verificação de dados
     if (!isLoaded || !globeData || globeData.length === 0 || !globeLand) {
         return;
     }
-    globeContext.clearRect(0, 0, 800, 600);
 
-    // esfera (oceano)
+    // 2. Limpa o canvas
+    globeContext.clearRect(0, 0, 800, 600); // Esses valores fixos podem ser um problema, vamos ajustá-los.
+
+    const canvas = document.getElementById("globe");
+    const width = canvas.width;
+    const height = canvas.height;
+    globeContext.clearRect(0, 0, width, height);
+
+    // 3. Desenha a esfera (oceano)
     globeContext.beginPath();
     globePath({ type: "Sphere" });
     globeContext.fillStyle = "#72aae7ff";
     globeContext.fill();
 
-    // países
+    // 4. Encontra o valor máximo para a escala de cores
     const maxVal = d3.max(globeData, d => +d[currentMetric] || 0) || 1;
+
+    // 5. Define a escala de cores baseada na métrica
     const colorScale = d3.scaleSequential()
         .domain([0, maxVal])
         .interpolator(
@@ -334,6 +343,7 @@ function renderGlobe() {
                     d3.interpolateGreens
         );
 
+    // 6. Desenha cada país com a cor correspondente
     globeLand.features.forEach(feature => {
         const countryName = feature.properties.name;
         const row = globeData.find(d => d.country === countryName);
@@ -347,7 +357,7 @@ function renderGlobe() {
         globeContext.stroke();
     });
 
-    // borda da esfera
+    // 7. Desenha a borda da esfera
     globeContext.beginPath();
     globePath({ type: "Sphere" });
     globeContext.strokeStyle = "#000000";
@@ -489,10 +499,11 @@ function distribuicaoporestado(data, metric = 'cases') {
                 scales: {
                     y: {
                         beginAtZero: true,
-                        title: { display: true, text: '# de Casos' },
+                        title: { display: true, text: 'N de Casos' },
                         ticks: {
+                            display: window.innerWidth >= 800,
                             callback: value => value.toLocaleString('pt-BR'),
-                            color: isDarkMode ? 'white' : '#333' // Branco no dark, cinza escuro no light
+                            color: isDarkMode ? '#f5f2f2ff' : '#333' // Branco no dark, cinza escuro no light
                         }
                     },
                     x: {
@@ -501,7 +512,13 @@ function distribuicaoporestado(data, metric = 'cases') {
                             maxRotation: 45,
                             minRotation: 45,
                             padding: 10,
-                            color: isDarkMode ? 'white' : '#333' // Branco no dark, cinza escuro no light
+                            color: isDarkMode ? 'white' : '#333', // Branco no dark, cinza escuro no light
+                            font: {
+                                size: window.innerWidth < 800 ? 6 : 14  // ↓ ajuste responsivo
+                            },
+                            // Ajusta a largura das barras dependendo do tamanho da tela
+                            categoryPercentage: window.innerWidth < 768 ? 1.0 : 1.0, // mais larga em mobile
+                            barPercentage: window.innerWidth < 768 ? 1.0 : 1.0
                         }
                     }
                 },
@@ -524,7 +541,6 @@ function distribuicaoporestado(data, metric = 'cases') {
                             }
                         },
                         position: 'nearest',
-                        // Ajustes para tornar o tooltip maior e mais visível
                         backgroundColor: 'rgba(0, 0, 0, 0.9)', // Fundo mais escuro para contraste
                         titleFont: { size: 26, weight: 'bold' }, // Título maior e em negrito
                         bodyFont: { size: 18 }, // Corpo maior
@@ -537,9 +553,10 @@ function distribuicaoporestado(data, metric = 'cases') {
                         boxRadius: 10
                     }
                 },
-                barThickness: 20,
-                barPercentage: 0.8,
-                categoryPercentage: 0.9
+
+                // barThickness: 20,
+                // barPercentage: 0.8,
+                // categoryPercentage: 0.9
             }
         });
     } catch (error) {
@@ -549,9 +566,8 @@ function distribuicaoporestado(data, metric = 'cases') {
 
 function initCharts() {
     // Se já existirem charts, destrói para evitar erro do Chart.js
-    if (timelineChart || countriesChart || continentChart || weeklyTrendChart || radarChart) {
-        destroyAllCharts();
-    }
+    destroyAllCharts();
+
     const timelineCtx = document.getElementById('timelineChart').getContext('2d');
     timelineChart = new Chart(timelineCtx, {
         type: 'line',
@@ -675,7 +691,6 @@ function initCharts() {
             }
         }
     });
-
     const countriesCtx = document.getElementById('countriesChart').getContext('2d');
     countriesChart = new Chart(countriesCtx, {
         type: 'bar',
@@ -890,6 +905,14 @@ function initCharts() {
     });
 }
 
+function destroyAllCharts() {
+    if (timelineChart) { timelineChart.destroy(); timelineChart = null; }
+    if (countriesChart) { countriesChart.destroy(); countriesChart = null; }
+    if (continentChart) { continentChart.destroy(); continentChart = null; }
+    if (weeklyTrendChart) { weeklyTrendChart.destroy(); weeklyTrendChart = null; }
+    if (radarChart) { radarChart.destroy(); radarChart = null; }
+}
+
 function updateCounters(globalData) {
     document.getElementById('totalCases').textContent = _formatNumberBR(globalData.confirmed);
     document.getElementById('totalDeaths').textContent = _formatNumberBR(globalData.deaths);
@@ -963,9 +986,10 @@ function updateCountriesChart() {
 
 function initCountriesChart() {
     const countriesCtx = document.getElementById('countriesChart').getContext('2d');
-    if (!countriesCtx) {
-        console.error('Contexto do canvas #countriesChart não encontrado.');
-        return;
+    // ✅ destrói o gráfico anterior se já existir
+    if (countriesChart) {
+        countriesChart.destroy();
+        countriesChart = null;
     }
     countriesChart = new Chart(countriesCtx, {
         type: 'bar',
@@ -1488,7 +1512,9 @@ document.addEventListener('DOMContentLoaded', function () {
                 initCountriesChart();
                 populateCountryTable(); // Chama apenas após carregar globalCountriesData
             }
-            if (continentesData.length > 0) distribuicaoporcontinente(continentesData);
+            if (globalContinentesData.length > 0) {
+                distribuicaoporcontinente(globalContinentesData);
+            }
             if (globalHistoricoData.length > 0) updateTimelineChart(globalHistoricoData);
             if (globalEstadosData.length > 0) renderBrazilMap(); // Chama o mapa
         }).catch(error => console.error('Erro em loadData:', error));
