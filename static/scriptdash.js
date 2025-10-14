@@ -290,11 +290,15 @@ async function initGlobe() {
         const res = await fetch("/api/paises");
         globeData = await res.json();
 
-        isLoaded = true; // Marca como carregado só após ambos awaits
+        isLoaded = true;
         d3.select(canvas).call(dragGlobe(globeProjection));
-        renderGlobe(); // Chamada de renderização inicial
+        renderGlobe();
 
-        // Adicione redraw automático para eventos comuns pós-refresh
+        // habilita clique nos países
+        enableCountryClick();
+        enableGlobeTooltip();
+
+        // redraw em resize/aba ativa
         window.addEventListener('resize', renderGlobe);
         document.addEventListener('visibilitychange', () => {
             if (!document.hidden && isLoaded) {
@@ -328,7 +332,7 @@ function renderGlobe() {
     // 3. Desenha a esfera (oceano)
     globeContext.beginPath();
     globePath({ type: "Sphere" });
-    globeContext.fillStyle = "#72aae7ff";
+    globeContext.fillStyle = "#96c1eeff";
     globeContext.fill();
 
     // 4. Encontra o valor máximo para a escala de cores
@@ -351,7 +355,7 @@ function renderGlobe() {
 
         globeContext.beginPath();
         globePath(feature);
-        globeContext.fillStyle = value > 0 ? colorScale(value) : "#c7d1b0ff";
+        globeContext.fillStyle = value > 0 ? colorScale(value) : "#eaeee0ff";
         globeContext.fill();
         globeContext.strokeStyle = "#20201fff";
         globeContext.stroke();
@@ -379,6 +383,54 @@ function dragGlobe(projection) {
     }
     return d3.drag().on("start", dragstarted).on("drag", dragged);
 }
+
+// Função para capturar clique no globo
+function enableCountryClick() {
+    const canvas = document.getElementById("globe");
+    canvas.addEventListener("click", (event) => {
+        console.log("👉 Clique detectado no canvas!");
+
+        if (!isLoaded || !globeData || !globeLand) return;
+
+        const rect = canvas.getBoundingClientRect();
+        const x = event.clientX - rect.left;
+        const y = event.clientY - rect.top;
+
+        // Converte pixel para coordenada geográfica (lon, lat)
+        const coords = globeProjection.invert([x, y]);
+        if (!coords) return;
+
+        // Verifica qual país contém o ponto clicado
+        for (const feature of globeLand.features) {
+            if (d3.geoContains(feature, coords)) {
+                const countryName = feature.properties.name;
+                console.log("✅ País clicado:", countryName);
+
+                const row = globeData.find(d => d.country === countryName);
+
+                if (row) {
+                    document.getElementById('totalCases').textContent =
+                        row.confirmed?.toLocaleString('pt-BR') || '0';
+                    document.getElementById('totalDeaths').textContent =
+                        row.deaths?.toLocaleString('pt-BR') || '0';
+                    document.getElementById('totalRecovered').textContent =
+                        (row.recovered || (row.confirmed - row.deaths))?.toLocaleString('pt-BR') || '0';
+                    document.getElementById('activeCases').textContent =
+                        row.suspects?.toLocaleString('pt-BR') || '0';
+
+                    const elTitle = document.getElementById('countryTitle');
+                    if (elTitle) elTitle.textContent = countryName;
+                } else {
+                    console.warn("Sem dados para", countryName);
+                }
+                break; // já encontrou o país, pode parar
+            }
+        }
+    });
+}
+
+// // Ativa clique depois de carregar o globo
+// initGlobe().then(() => enableCountryClick());
 
 // inicializar
 initGlobe();
@@ -540,17 +592,17 @@ function distribuicaoporestado(data, metric = 'cases') {
                                 return `${tooltipItem.label}: ${value?.toLocaleString('pt-BR') || 'N/A'} (${percentage}%)`;
                             }
                         },
-                        position: 'nearest',
+                        // Ajustes para tornar o tooltip maior e mais visível
                         backgroundColor: 'rgba(0, 0, 0, 0.9)', // Fundo mais escuro para contraste
-                        titleFont: { size: 26, weight: 'bold' }, // Título maior e em negrito
-                        bodyFont: { size: 18 }, // Corpo maior
+                        titleFont: { size: 20, weight: 'bold' }, // Título maior e em negrito
+                        bodyFont: { size: 14 }, // Corpo maior
                         padding: 12, // Mais padding interno
                         caretSize: 10, // Aumenta o tamanho da seta
                         cornerRadius: 8, // Bordas mais arredondadas
                         boxPadding: 6, // Espaçamento interno das caixas
                         minWidth: 250, // Largura mínima para evitar que fique muito pequeno
                         displayColors: true,
-                        boxRadius: 10
+                        boxRadius: 20
                     }
                 },
 
@@ -650,15 +702,15 @@ function initCharts() {
                     },
                     // Ajustes para tornar o tooltip maior e mais visível
                     backgroundColor: 'rgba(0, 0, 0, 0.9)', // Fundo mais escuro para contraste
-                    titleFont: { size: 16, weight: 'bold' }, // Título maior e em negrito
-                    bodyFont: { size: 10 }, // Corpo maior
+                    titleFont: { size: 20, weight: 'bold' }, // Título maior e em negrito
+                    bodyFont: { size: 14 }, // Corpo maior
                     padding: 12, // Mais padding interno
                     caretSize: 10, // Aumenta o tamanho da seta
                     cornerRadius: 8, // Bordas mais arredondadas
                     boxPadding: 6, // Espaçamento interno das caixas
                     minWidth: 250, // Largura mínima para evitar que fique muito pequeno
                     displayColors: true,
-                    boxRadius: 10
+                    boxRadius: 20
                 }
             },
             scales: {
@@ -735,8 +787,8 @@ function initCharts() {
                     },
                     // Ajustes para tornar o tooltip maior e mais visível
                     backgroundColor: 'rgba(0, 0, 0, 0.9)', // Fundo mais escuro para contraste
-                    titleFont: { size: 26, weight: 'bold' }, // Título maior e em negrito
-                    bodyFont: { size: 18 }, // Corpo maior
+                    titleFont: { size: 20, weight: 'bold' }, // Título maior e em negrito
+                    bodyFont: { size: 14 }, // Corpo maior
                     padding: 12, // Mais padding interno
                     caretSize: 10, // Aumenta o tamanho da seta
                     cornerRadius: 8, // Bordas mais arredondadas
@@ -1013,7 +1065,6 @@ function initCountriesChart() {
             plugins: {
                 legend: { display: false },
                 tooltip: {
-                    backgroundColor: 'rgba(0, 0, 0, 0.8)',
                     titleColor: 'white',
                     bodyColor: 'white',
                     cornerRadius: 8,
@@ -1026,13 +1077,13 @@ function initCountriesChart() {
                         }
                     },
                     backgroundColor: 'rgba(0, 0, 0, 0.9)',
-                    titleFont: { size: 26, weight: 'bold' },
-                    bodyFont: { size: 18 },
+                    titleFont: { size: 20, weight: 'bold' },
+                    bodyFont: { size: 14 },
                     padding: 12,
                     caretSize: 10,
                     cornerRadius: 8,
                     boxPadding: 6,
-                    minWidth: 250,
+                    // minWidth: 250,
                     displayColors: true,
                     boxRadius: 20
                 }
@@ -1088,24 +1139,24 @@ function initTimelineChart(historicoData) {
             plugins: {
                 legend: { position: 'bottom', labels: { usePointStyle: true, padding: 20 } },
                 tooltip: {
-                    backgroundColor: 'rgba(0, 0, 0, 0.8)',
                     titleColor: 'white',
                     bodyColor: 'white',
-                    borderColor: 'rgba(255, 255, 255, 0.1)',
-                    borderWidth: 1,
                     cornerRadius: 8,
                     displayColors: true,
-                    callbacks: { label: context => `${context.dataset.label}: ${context.parsed.y.toLocaleString()}` },
-                    backgroundColor: 'rgba(0, 0, 0, 0.9)',
-                    titleFont: { size: 16, weight: 'bold' },
-                    bodyFont: { size: 10 },
-                    padding: 12,
-                    caretSize: 10,
-                    cornerRadius: 8,
-                    boxPadding: 6,
-                    minWidth: 250,
+                    callbacks: {
+                        label: context => `${context.dataset.label}: ${context.parsed.y.toLocaleString()}`
+                    },
+                    // Ajustes para tornar o tooltip maior e mais visível
+                    backgroundColor: 'rgba(0, 0, 0, 0.9)', // Fundo mais escuro para contraste
+                    titleFont: { size: 20, weight: 'bold' }, // Título maior e em negrito
+                    bodyFont: { size: 14 }, // Corpo maior
+                    padding: 12, // Mais padding interno
+                    caretSize: 10, // Aumenta o tamanho da seta
+                    cornerRadius: 8, // Bordas mais arredondadas
+                    boxPadding: 6, // Espaçamento interno das caixas
+                    minWidth: 250, // Largura mínima para evitar que fique muito pequeno
                     displayColors: true,
-                    boxRadius: 10
+                    boxRadius: 20
                 }
             },
             scales: {
@@ -1127,6 +1178,75 @@ function initTimelineChart(historicoData) {
     });
     // Atualiza com os dados atuais após inicialização
     updateTimelineChart(historicoData);
+}
+
+// Adicione esta função para criar e gerenciar o tooltip do globo
+function enableGlobeTooltip() {
+    const canvas = document.getElementById("globe");
+    if (!canvas) return;
+
+    // Cria o elemento do tooltip e o anexa ao corpo do documento
+    let tooltip = d3.select("body").append("div")
+        .attr("class", "globe-tooltip")
+        .style("position", "absolute")
+        .style("z-index", "10")
+        .style("visibility", "hidden")
+        .style("background", "rgba(40, 40, 40, 0.9)")
+        .style("color", "#fff")
+        .style("padding", "10px")
+        .style("border-radius", "8px")
+        .style("font-family", "sans-serif")
+        .style("font-size", "14px")
+        .style("max-width", "200px")
+        .style("pointer-events", "none"); // Impede que o tooltip intercepte os eventos do mouse
+
+    canvas.addEventListener("mousemove", function (event) {
+        if (!isLoaded || !globeData || !globeLand) return;
+
+        const rect = canvas.getBoundingClientRect();
+        const x = event.clientX - rect.left;
+        const y = event.clientY - rect.top;
+
+        const coords = globeProjection.invert([x, y]);
+        if (!coords) return;
+
+        let foundCountry = null;
+        for (const feature of globeLand.features) {
+            if (d3.geoContains(feature, coords)) {
+                foundCountry = feature.properties.name;
+                break;
+            }
+        }
+
+        if (foundCountry) {
+            const row = globeData.find(d => d.country === foundCountry);
+            if (row) {
+                const confirmed = row.confirmed?.toLocaleString('pt-BR') || '0';
+                const deaths = row.deaths?.toLocaleString('pt-BR') || '0';
+                const recovered = (row.recovered || (row.confirmed - row.deaths))?.toLocaleString('pt-BR') || '0';
+
+                tooltip.html(`
+                    <strong style="font-size: 16px; display: block; margin-bottom: 5px;">${foundCountry}</strong>
+                    <div><strong>Confirmados:</strong> ${confirmed}</div>
+                    <div><strong>Mortes:</strong> ${deaths}</div>
+                    <div><strong>Recuperados:</strong> ${recovered}</div>
+                `);
+                tooltip.style("visibility", "visible");
+            }
+        } else {
+            tooltip.style("visibility", "hidden");
+        }
+    });
+
+    canvas.addEventListener("mouseout", function () {
+        // Esconde o tooltip quando o mouse sai do canvas
+        tooltip.style("visibility", "hidden");
+    });
+
+    // Atualiza a posição do tooltip
+    d3.select(canvas).on("mousemove.tooltip", function (event) {
+        tooltip.style("top", (event.pageY - 10) + "px").style("left", (event.pageX + 10) + "px");
+    });
 }
 
 // ----------------------------------------------------------------------------------------------------------------------------------
@@ -1626,25 +1746,6 @@ function logout() {
     }
 }
 
-function togglePasswordVisibility() {
-    const passwordInput = document.getElementById('password');
-    const eyeIcon = document.getElementById('eyeIcon');
-
-    if (passwordInput.type === 'password') {
-        passwordInput.type = 'text';
-        eyeIcon.innerHTML = `
-            <path d="M3.707 2.293a1 1 0 00-1.414 1.414l14 14a1 1 0 001.414-1.414l-1.473-1.473A10.014 10.014 0 0019.542 10C18.268 5.943 14.478 3 10 3a9.958 9.958 0 00-4.512 1.074l-1.78-1.781zm4.261 4.26l1.514 1.515a2.003 2.003 0 012.45 2.45l1.514 1.514a4 4 0 00-5.478-5.478z"/>
-            <path d="M12.454 16.697L9.75 13.992a4 4 0 01-3.742-3.741L2.335 6.578A9.98 9.98 0 00.458 10c1.274 4.057 5.065 7 9.542 7 .847 0 1.669-.105 2.454-.303z"/>
-        `;
-    } else {
-        passwordInput.type = 'password';
-        eyeIcon.innerHTML = `
-            <path d="M10 12a2 2 0 100-4 2 2 0 000 4z"/>
-            <path fill-rule="evenodd" d="M.458 10C1.732 5.943 5.522 3 10 3s8.268 2.943 9.542 7c-1.274 4.057-5.064 7-9.542 7S1.732 14.057.458 10zM14 10a4 4 0 11-8 0 4 4 0 018 0z" clip-rule="evenodd"/>
-        `;
-    }
-}
-
 function alternarTema() {
     const body = document.body;
     const themeIcon = document.querySelector('.theme-icon');
@@ -1730,16 +1831,31 @@ let chatOpen = false;
 
 // Respostas do chatbot
 const chatResponses = {
-    'qual país tem mais casos': 'Baseado nos dados atuais, os Estados Unidos lideram com 103.4 milhões de casos confirmados, seguidos pela China com 99.3 milhões e Índia com 44.7 milhões.',
-    'como está a tendência no brasil': 'O Brasil registra 37.1 milhões de casos totais com 700 mil mortes. A tendência atual mostra estabilização com leve declínio nos novos casos diários.',
-    'taxa de mortalidade global': 'A taxa de mortalidade global atual é de aproximadamente 0.99% (6.8 milhões de mortes em 685.2 milhões de casos). Varia significativamente entre países.',
-    'casos ativos': 'Atualmente temos 20.3 milhões de casos ativos globalmente, representando cerca de 3% do total de casos confirmados.',
-    'recuperados': 'O número global de recuperados é de 658.1 milhões, representando uma taxa de recuperação de aproximadamente 96%.',
-    'vacinação': 'Os dados de vacinação não estão disponíveis neste dashboard no momento, mas posso ajudar com informações sobre casos, mortes e recuperações.',
-    'europa': 'A Europa registra 245.8 milhões de casos (36% do total mundial). França, Alemanha e Itália estão entre os países mais afetados.',
-    'ásia': 'A Ásia tem 198.5 milhões de casos (29% do total mundial). China, Índia, Japão e Coreia do Sul são os países com mais casos na região.',
-    'américa': 'As Américas registram 185.2 milhões de casos (27% do total mundial). EUA e Brasil são os países mais afetados da região.',
-    'default': 'Posso ajudar com informações sobre casos de COVID-19, estatísticas por país, tendências e dados globais. Tente perguntar sobre países específicos, taxas de mortalidade ou recuperação!'
+    // Perguntas sobre Ranking e Países
+    'qual país tem mais casos': 'Para obter o ranking atualizado, por favor, consulte o gráfico "Top 10 Países" ou a tabela "Dados Detalhados por País" no dashboard. Os dados mudam constantemente.',
+    'qual o pais com mais mortes': 'O número de mortes por país varia. Você pode verificar os dados mais recentes na tabela detalhada no final do dashboard e ordená-la por "Mortes" para ver o ranking.',
+    'quais os 5 países mais afetados': 'Os cinco países mais afetados geralmente incluem EUA, China, Índia, França e Alemanha. No entanto, para dados precisos e atualizados, a melhor fonte é a tabela de países do dashboard.',
+    'e a argentina': 'Você pode encontrar os dados específicos da Argentina usando a barra de rolagem na tabela "Dados Detalhados por País" na parte inferior da página.',
+
+    // Perguntas sobre o Brasil
+    'como está a tendência no brasil': 'O dashboard mostra o histórico completo de casos, mortes e suspeitas para o Brasil no gráfico de "Evolução Temporal". A tendência geral pode ser de estabilização ou queda, mas os picos podem ocorrer.',
+    'qual o total de casos no brasil': 'O número total de casos confirmados no Brasil está disponível no card "Casos Confirmados" no topo do dashboard, e também é a primeira linha de informação ao carregar a página.',
+    'qual estado brasileiro tem mais casos': 'O gráfico de barras "Distribuição por Estados do Brasil" mostra o ranking de casos. Historicamente, São Paulo (SP) lidera em números absolutos. [cite_start]Você pode clicar no estado no mapa para ver dados municipais. [cite: 1238]',
+    'e minas gerais': 'Os dados de Minas Gerais (MG) estão disponíveis no gráfico e no mapa de estados. [cite_start]Clique na sigla "MG" no mapa para explorar os dados dos municípios. [cite: 1238]',
+
+    // Perguntas sobre Continentes
+    'qual continente tem mais casos': 'As Américas, combinando Norte e Sul, e a Europa são os continentes com os maiores números de casos reportados. [cite_start]O gráfico de pizza "Distribuição por Continente" ilustra essa proporção. [cite: 4]',
+    'casos na europa': 'A Europa é um dos continentes mais afetados pela pandemia. [cite_start]Você pode ver o total de casos no card "Europa" e comparar com outros continentes. [cite: 4]',
+    'casos na ásia': 'A Ásia também reportou um número significativo de casos. [cite_start]O card "Ásia" no dashboard fornece o total de casos confirmados para o continente. [cite: 4]',
+    'casos na américa': 'As Américas (Norte e Sul) representam uma grande parcela dos casos mundiais. [cite_start]Os cards "América" no dashboard mostram os números totais. [cite: 4]',
+
+    // Perguntas Gerais
+    'taxa de mortalidade': 'A taxa de mortalidade (mortes / casos confirmados) pode ser calculada para cada país e está disponível na coluna "Taxa de Mortalidade" na tabela detalhada. A taxa global pode ser estimada dividindo o total de mortes pelo total de casos confirmados.',
+    'o que são casos suspeitos': 'Casos suspeitos ("suspects") são notificações de possíveis infecções que ainda aguardam confirmação laboratorial. [cite_start]O número de suspeitas para os estados brasileiros está nos dados. [cite: 1238]',
+    'o que é o dashboard': 'Este é um dashboard interativo para monitoramento de casos de COVID-19, com dados históricos e em tempo real do Brasil e do mundo.',
+
+    // Resposta Padrão
+    'default': 'Não entendi sua pergunta. Posso fornecer informações sobre casos, mortes e tendências de COVID-19 por país, estado ou continente. Tente perguntar sobre "casos no Brasil" ou "países mais afetados".'
 };
 
 // Função para alternar chat
