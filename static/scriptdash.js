@@ -1831,31 +1831,64 @@ let chatOpen = false;
 
 // Respostas do chatbot
 const chatResponses = {
-    // Perguntas sobre Ranking e Países
-    'qual país tem mais casos': 'Para obter o ranking atualizado, por favor, consulte o gráfico "Top 10 Países" ou a tabela "Dados Detalhados por País" no dashboard. Os dados mudam constantemente.',
-    'qual o pais com mais mortes': 'O número de mortes por país varia. Você pode verificar os dados mais recentes na tabela detalhada no final do dashboard e ordená-la por "Mortes" para ver o ranking.',
-    'quais os 5 países mais afetados': 'Os cinco países mais afetados geralmente incluem EUA, China, Índia, França e Alemanha. No entanto, para dados precisos e atualizados, a melhor fonte é a tabela de países do dashboard.',
-    'e a argentina': 'Você pode encontrar os dados específicos da Argentina usando a barra de rolagem na tabela "Dados Detalhados por País" na parte inferior da página.',
+    // === Saudações e Interações Humanizadas ===
+    'oi': 'Olá! 👋 Como posso te ajudar a explorar os dados de COVID-19 hoje?',
+    'ola': 'Olá! 👋 Estou à disposição para ajudar com informações sobre o dashboard.',
+    'olá': 'Olá! 👋 Fico feliz em ajudar. O que você gostaria de saber?',
+    'bom dia': 'Bom dia! ☀️ Pronto para analisar alguns dados? O que você busca?',
+    'boa tarde': 'Boa tarde! Como posso te ajudar a navegar pelo dashboard?',
+    'boa noite': 'Boa noite! Buscando alguma informação específica nos dados?',
+    'tudo bem': 'Tudo ótimo por aqui, pronto para te ajudar a analisar os dados! E com você?',
+    'e aí': 'E aí! Beleza? Me diga o que você quer saber sobre os dados de COVID-19.',
+    'como você está': 'Estou funcionando perfeitamente, obrigado por perguntar! Pronto para te ajudar a encontrar as informações que precisa.',
+    'quem é você': 'Eu sou o assistente virtual deste dashboard, criado para te ajudar a encontrar e entender os dados de COVID-19 de forma rápida e fácil.',
 
-    // Perguntas sobre o Brasil
-    'como está a tendência no brasil': 'O dashboard mostra o histórico completo de casos, mortes e suspeitas para o Brasil no gráfico de "Evolução Temporal". A tendência geral pode ser de estabilização ou queda, mas os picos podem ocorrer.',
-    'qual o total de casos no brasil': 'O número total de casos confirmados no Brasil está disponível no card "Casos Confirmados" no topo do dashboard, e também é a primeira linha de informação ao carregar a página.',
-    'qual estado brasileiro tem mais casos': 'O gráfico de barras "Distribuição por Estados do Brasil" mostra o ranking de casos. Historicamente, São Paulo (SP) lidera em números absolutos. [cite_start]Você pode clicar no estado no mapa para ver dados municipais. [cite: 1238]',
-    'e minas gerais': 'Os dados de Minas Gerais (MG) estão disponíveis no gráfico e no mapa de estados. [cite_start]Clique na sigla "MG" no mapa para explorar os dados dos municípios. [cite: 1238]',
+    // === Perguntas sobre o Brasil (Geral) ===
+    'como está a tendência no brasil': 'A "Evolução Temporal de Casos no Brasil" é o melhor lugar para ver isso. O gráfico de linhas mostra o histórico completo, permitindo que você identifique picos e quedas.',
+    'qual o total de casos no brasil': 'O número total de casos confirmados no Brasil está em destaque logo no topo do dashboard, no card "Casos Confirmados".',
+    'total de mortes no brasil': 'Você encontra o total de mortes confirmadas no Brasil no card vermelho "Mortes Confirmadas", no topo da página.',
+    'quantos recuperados no brasil': 'O número de pessoas recuperadas no Brasil está no card verde "Recuperados", bem no início do dashboard.',
+    'e os casos suspeitos no brasil': 'O total de casos suspeitos está no card laranja "Suspeitas". Esse número representa as notificações que aguardam confirmação.',
 
-    // Perguntas sobre Continentes
-    'qual continente tem mais casos': 'As Américas, combinando Norte e Sul, e a Europa são os continentes com os maiores números de casos reportados. [cite_start]O gráfico de pizza "Distribuição por Continente" ilustra essa proporção. [cite: 4]',
-    'casos na europa': 'A Europa é um dos continentes mais afetados pela pandemia. [cite_start]Você pode ver o total de casos no card "Europa" e comparar com outros continentes. [cite: 4]',
-    'casos na ásia': 'A Ásia também reportou um número significativo de casos. [cite_start]O card "Ásia" no dashboard fornece o total de casos confirmados para o continente. [cite: 4]',
-    'casos na américa': 'As Américas (Norte e Sul) representam uma grande parcela dos casos mundiais. [cite_start]Os cards "América" no dashboard mostram os números totais. [cite: 4]',
+    // === Perguntas sobre Estados do Brasil ===
+    'qual estado do brasil tem mais casos': 'No gráfico de barras "Distribuição por Estados do Brasil", você pode ver o ranking de casos. E aqui vai uma dica: clique em um estado no "Mapa de Casos" para abrir os dados detalhados de seus municípios!',
+    'qual estado tem mais mortes': 'Para ver o ranking de mortes por estado, use o filtro do gráfico "Distribuição por Estados do Brasil" e selecione "Total de Mortes".',
+    'quais os 5 estados com mais casos': 'O gráfico de barras de distribuição por estado já mostra o ranking. Os primeiros 5 da lista são os que têm mais casos confirmados.',
+    'quais os 5 estados com menos casos': 'No gráfico de barras de distribuição por estado, os últimos da lista são os que têm menos casos. Você pode conferir a ordem lá!',
+    'e minas gerais': 'Os dados de Minas Gerais (MG) estão no mapa e no gráfico de distribuição. Lembre-se que você pode clicar na sigla "MG" no mapa para explorar os dados de todas as cidades mineiras que estão na sua base.',
+    'como estão os casos em são paulo': 'Para São Paulo (SP), você pode ver os totais no gráfico de barras e no mapa. Clicando em SP no mapa, você pode até ver os dados dos municípios paulistas.',
+    'e o rio de janeiro': 'Os dados do Rio de Janeiro (RJ) estão disponíveis! Dê uma olhada no gráfico de distribuição e no mapa interativo. Clicar no estado do Rio no mapa te dará mais detalhes.',
 
-    // Perguntas Gerais
-    'taxa de mortalidade': 'A taxa de mortalidade (mortes / casos confirmados) pode ser calculada para cada país e está disponível na coluna "Taxa de Mortalidade" na tabela detalhada. A taxa global pode ser estimada dividindo o total de mortes pelo total de casos confirmados.',
-    'o que são casos suspeitos': 'Casos suspeitos ("suspects") são notificações de possíveis infecções que ainda aguardam confirmação laboratorial. [cite_start]O número de suspeitas para os estados brasileiros está nos dados. [cite: 1238]',
-    'o que é o dashboard': 'Este é um dashboard interativo para monitoramento de casos de COVID-19, com dados históricos e em tempo real do Brasil e do mundo.',
+    // === Perguntas sobre Países e Ranking Mundial ===
+    'qual país tem mais casos': 'Ótima pergunta! No gráfico "Top 10 Países", você pode ver o ranking dinâmico. Se quiser ver a lista completa, a tabela "Dados Detalhados por País" no final da página tem todos os dados.',
+    'qual o pais com mais mortes': 'Para ver o ranking de mortes, você pode usar o filtro no gráfico "Top 10 Países" e selecionar "Total de Mortes". A tabela detalhada também permite ordenar os países por essa coluna.',
+    'quais os 5 países mais afetados': 'Os países mais afetados mudam constantemente. A melhor forma de ver os dados atualizados é conferir o gráfico "Top 10 Países" ou ordenar a tabela detalhada por "Casos Totais".',
+    'e a argentina': 'Claro! Para ver os dados da Argentina, você pode usar a barra de rolagem na tabela "Dados Detalhados por País". Lá você encontrará os números de casos, mortes e recuperados.',
+    'como estão os eua': 'Os dados dos Estados Unidos (EUA) estão na tabela detalhada por país. Você pode rolar a tabela para encontrá-los ou usar a funcionalidade de ordenação para trazê-los ao topo.',
+    'e a china': 'Para encontrar informações sobre a China, consulte a tabela "Dados Detalhados por País" no final do dashboard.',
 
-    // Resposta Padrão
-    'default': 'Não entendi sua pergunta. Posso fornecer informações sobre casos, mortes e tendências de COVID-19 por país, estado ou continente. Tente perguntar sobre "casos no Brasil" ou "países mais afetados".'
+    // === Perguntas sobre Continentes ===
+    'qual continente tem mais casos': 'O gráfico de pizza "Distribuição por Continente" mostra exatamente isso! Ele calcula a proporção de casos em cada continente com base nos seus dados.',
+    'casos na europa': 'A Europa é um dos continentes mais impactados. Você pode ver o total de casos, mortes e recuperados para o continente nos cards de resumo, logo acima da tabela detalhada.',
+    'casos na ásia': 'Com certeza. O card "Ásia" no dashboard mostra o total de casos confirmados, permitindo uma comparação rápida com os outros continentes.',
+    'casos na américa': 'As Américas (Norte e Sul) representam uma grande parcela dos casos. Os cards de resumo, como o da "América", fornecem os totais consolidados para o continente.',
+
+    // === Perguntas sobre o Dashboard e Funcionalidades ===
+    'taxa de mortalidade': 'A taxa de mortalidade é calculada e exibida na última coluna da tabela "Dados Detalhados por País". Você pode até ordenar a tabela por essa coluna para ver quem tem as maiores e menores taxas.',
+    'o que são casos suspeitos': 'Casos suspeitos são as notificações de possíveis infecções que ainda estão aguardando um resultado de exame para serem confirmadas ou descartadas.',
+    'o que é o dashboard': 'Este é o seu dashboard interativo! Ele foi criado para monitorar e explorar os dados de COVID-19 que você carregou, tanto do Brasil quanto do mundo.',
+    'como usar os filtros': 'É bem simples! Na seção "Status Região Brasil", você pode selecionar uma região e um período de tempo. Depois, clique em "Atualizar Dados" para que todos os cards e gráficos se ajustem à sua seleção.',
+    'posso ver dados de cidades': 'Sim! No mapa do Brasil, clique em qualquer estado e uma janela (modal) aparecerá com a lista de municípios e seus respectivos dados de casos e mortes. Você pode até pesquisar por uma cidade específica!',
+
+    // === Despedidas e Agradecimentos ===
+    'obrigado': 'De nada! Se precisar de mais alguma coisa, é só chamar. 😊',
+    'obrigada': 'De nada! Fico feliz em ajudar. Se tiver mais dúvidas, pode perguntar.',
+    'valeu': 'Disponha! Se precisar de mais alguma análise, estou por aqui.',
+    'tchau': 'Até mais! Se precisar, estarei por aqui. 👋',
+    'adeus': 'Até logo! Tenha um ótimo dia.',
+
+    // === Resposta Padrão (Fallback) ===
+    'default': 'Hmm, não tenho certeza de como responder a isso. Que tal tentar perguntar de outra forma? Você pode perguntar sobre "casos no Brasil", "quais os 5 países mais afetados" ou "tendência de mortes", por exemplo.'
 };
 
 // Função para alternar chat
@@ -1948,18 +1981,8 @@ function addBotMessage(message) {
     chatMessages.scrollTop = chatMessages.scrollHeight;
 }
 
-// Obter resposta do bot
-
 async function getBotResponse(message) {
-    try {
-        const res = await fetch('/api/chat', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ message })
-        });
-        const data = await res.json();
-        return data.response || 'Desculpe, não consegui entender.';
-    } catch (error) {
-        return 'Erro ao conectar com o agente.';
-    }
+    const normalizedMessage = message.toLowerCase().trim();
+    const response = chatResponses[normalizedMessage] || chatResponses['default'];
+    return Promise.resolve(response);
 }
